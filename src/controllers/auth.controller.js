@@ -5,15 +5,9 @@ const { INVITADO, limitarIntentos } = require('../middlewares/autenticacion');
 
 const intentos = limitarIntentos();
 
-/** Regenera el id de sesión al ingresar (evita fijación de sesión) y guarda el usuario. */
+/** Guarda el usuario en la cookie de sesión firmada (se reemplaza todo su contenido). */
 function iniciarSesion(req, usuario) {
-  return new Promise((resolve, reject) => {
-    req.session.regenerate(err => {
-      if (err) return reject(err);
-      req.session.usuario = usuario;
-      req.session.save(e => (e ? reject(e) : resolve()));
-    });
-  });
+  req.session = { usuario, inicio: Date.now() };
 }
 
 /** GET /api/estado → { usuario } (null si no hay sesión). */
@@ -32,26 +26,22 @@ async function login(req, res) {
     return res.status(401).json({ mensaje: 'Usuario o contraseña incorrectos, o la cuenta está inactiva.' });
   }
   intentos.exito(req);
-  await iniciarSesion(req, usuario);
+  iniciarSesion(req, usuario);
   Bitacora.registrar(usuario.usuario, 'ingreso', req.ip);
   res.json({ usuario });
 }
 
 /** POST /api/invitado → { usuario } (solo consulta) */
-async function invitado(req, res) {
-  await iniciarSesion(req, { ...INVITADO });
+function invitado(req, res) {
+  iniciarSesion(req, { ...INVITADO });
   res.json({ usuario: { ...INVITADO } });
 }
 
 /** POST /api/logout */
-function logout(req, res, next) {
-  const nombre = req.usuario?.usuario;
-  req.session.destroy(err => {
-    if (err) return next(err);
-    if (nombre) Bitacora.registrar(nombre, 'salida');
-    res.clearCookie('gem.sid');
-    res.json({ ok: true });
-  });
+function logout(req, res) {
+  if (req.usuario) Bitacora.registrar(req.usuario.usuario, 'salida');
+  req.session = null; // borra la cookie
+  res.json({ ok: true });
 }
 
 module.exports = { estado, login, invitado, logout, verificarIntentos: intentos.verificar };

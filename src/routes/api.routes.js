@@ -15,7 +15,7 @@ router.use((_req, res, next) => { res.set('Cache-Control', 'no-store'); next(); 
 // Sesión
 router.get('/estado', auth.estado);
 router.post('/login', auth.verificarIntentos, asincrono(auth.login));
-router.post('/invitado', asincrono(auth.invitado));
+router.post('/invitado', auth.invitado);
 router.post('/logout', auth.logout);
 
 // Datos de los módulos

@@ -1,0 +1,7 @@
+# No subir a Vercel: base de datos local, secretos ni dependencias (Vercel las instala).
+data/
+.env
+node_modules/
+web.config
+iisnode/
+*.log

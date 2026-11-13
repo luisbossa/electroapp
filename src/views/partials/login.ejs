@@ -79,6 +79,13 @@
         <i data-lucide="eye"></i> Entrar como invitado
       </button>
 
+      <% if (modoDemo) { %>
+      <p class="login-demo" role="note">
+        <i data-lucide="flask-conical"></i>
+        <span><strong>Versión de demostración.</strong> Los cambios no son permanentes: se reinician periódicamente.</span>
+      </p>
+      <% } %>
+
       <footer class="login-footer">
         <span>Ingeniería y Mantenimiento</span>
         <span>Autor Ing. Gabriel Salas</span>

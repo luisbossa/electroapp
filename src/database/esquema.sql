@@ -12,12 +12,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
   actualizado   TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
-CREATE TABLE IF NOT EXISTS sesiones (
-  sid    TEXT PRIMARY KEY,
-  expira INTEGER NOT NULL,
-  datos  TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS idx_sesiones_expira ON sesiones (expira);
+-- Las sesiones viajan en una cookie firmada; la tabla anterior ya no se usa.
+DROP TABLE IF EXISTS sesiones;
 
 -- Una tabla por módulo. Cada fila es un registro del módulo guardado como JSON,
 -- para conservar intactos los campos que maneja la interfaz.

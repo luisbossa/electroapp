@@ -12,8 +12,9 @@ function cargarUsuario(req, _res, next) {
   if (!enSesion) { req.usuario = null; return next(); }
   if (enSesion.id === INVITADO.id) { req.usuario = { ...INVITADO }; return next(); }
   const actual = Usuario.buscarPorId(enSesion.id);
-  if (!actual || !actual.activo) { delete req.session.usuario; req.usuario = null; return next(); }
-  req.session.usuario = actual;
+  if (!actual || !actual.activo) { req.session = null; req.usuario = null; return next(); }
+  // Solo se reescribe la cookie si cambió el nombre o el rol.
+  if (actual.rol !== enSesion.rol || actual.nombre !== enSesion.nombre) req.session.usuario = actual;
   req.usuario = actual;
   next();
 }
