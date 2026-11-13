@@ -1,0 +1,197 @@
+<!-- VISTA 2: EQUIPOS / DASHBOARD POR UBICACIONES -->
+<div id="view-equipos" class="tab-content space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">
+        Listado de Equipos
+      </h2>
+      <p class="text-sm text-slate-500"></p>
+    </div>
+    <button
+      onclick="openEquipoModal()"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition"
+    >
+      <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Equipo
+    </button>
+  </div>
+
+  <div class="module-search-shell">
+    <i data-lucide="search" class="module-search-icon"></i
+    ><input
+      id="equipos-search"
+      oninput="renderEquiposTable()"
+      autocomplete="off"
+      placeholder="Buscar por número de activo o descripción del equipo..."
+      class="module-search-input"
+    />
+  </div>
+
+  <div
+    class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm space-y-2"
+  >
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+      <div
+        class="text-xs font-bold text-blue-600 uppercase tracking-wider flex items-center gap-2"
+      >
+        <i data-lucide="map-pin" class="w-4 h-4"></i> Seleccionar Sede /
+        EBAIS:
+      </div>
+      <button
+        id="btn-admin-ubicaciones"
+        type="button"
+        onclick="openUbicacionesManager()"
+        class="hidden px-3 py-2 rounded-lg border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold transition flex items-center gap-2"
+      >
+        <i data-lucide="settings-2" class="w-4 h-4"></i> Administrar
+        ubicaciones
+      </button>
+    </div>
+    <div
+      class="flex flex-wrap gap-1.5"
+      id="location-tabs-container"
+    ></div>
+  </div>
+
+  <div
+    class="bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700 rounded-xl p-5 text-white shadow-md"
+  >
+    <div
+      class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-blue-400/30 pb-4 mb-4"
+    >
+      <div>
+        <span
+          class="text-xs text-blue-200 font-semibold tracking-wider uppercase"
+          >Sede Seleccionada</span
+        >
+        <h3
+          id="selected-location-title"
+          class="text-2xl font-extrabold text-white"
+        >
+          Inventario General
+        </h3>
+      </div>
+      <div class="flex gap-2">
+        <span
+          id="selected-location-badge"
+          class="bg-white/20 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm"
+          >Cargando...</span
+        >
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div
+        class="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10"
+      >
+        <p class="text-xs text-blue-200">Total en Sede</p>
+        <p id="loc-kpi-total" class="text-xl font-bold mt-1">0</p>
+      </div>
+      <div
+        class="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10"
+      >
+        <p class="text-xs text-blue-200">Operativos</p>
+        <p
+          id="loc-kpi-operativos"
+          class="text-xl font-bold mt-1 text-emerald-300"
+        >
+          0
+        </p>
+      </div>
+      <div
+        class="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10"
+      >
+        <p class="text-xs text-blue-200">En Mantenimiento</p>
+        <p
+          id="loc-kpi-maint"
+          class="text-xl font-bold mt-1 text-amber-300"
+        >
+          0
+        </p>
+      </div>
+      <div
+        class="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10"
+      >
+        <p class="text-xs text-blue-200">Alertas LOEM (&gt;=80%)</p>
+        <p
+          id="loc-kpi-loem"
+          class="text-xl font-bold mt-1 text-red-300"
+        >
+          0
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+  >
+    <div
+      class="p-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-3 bg-slate-50"
+    >
+      <span
+        class="text-xs font-bold text-blue-600 uppercase tracking-wide flex items-center gap-2"
+      >
+        <i data-lucide="list" class="w-4 h-4"></i> Listado de Fichas
+        Técnicas (Haz clic en una fila)
+      </span>
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2">
+          <label class="text-xs text-slate-500 font-semibold"
+            >Estado:</label
+          >
+          <select
+            id="filter-estado"
+            onchange="renderAll()"
+            class="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white font-medium focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="TODOS">Todos los estados</option>
+            <option value="Operativo">Operativo</option>
+            <option value="En Mantenimiento">En Mantenimiento</option>
+            <option value="Fuera de Servicio">Fuera de Servicio</option>
+            <option value="Dado de Baja">Dado de Baja</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs text-slate-500 font-semibold"
+            >Vida Útil (LOEM):</label
+          >
+          <select
+            id="filter-loem"
+            onchange="renderAll()"
+            class="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white font-medium focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="TODOS">Todos los rangos LOEM</option>
+            <option value="RESTANTE">
+              Con vida útil restante (&lt; 80%)
+            </option>
+            <option value="PROXIMO">
+              Próximo a cumplir (&gt;= 80% y &lt; 100%)
+            </option>
+            <option value="CUMPLIDA">Vida útil cumplida (100%)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead
+          class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200"
+        >
+          <tr>
+            <th class="p-4">Nº Activo / Serie</th>
+            <th class="p-4">Equipo</th>
+            <th class="p-4">Marca / Modelo</th>
+            <th class="p-4">Servicio / Ubicación</th>
+            <th class="p-4">Vida Útil (LOEM)</th>
+            <th class="p-4">Estado</th>
+            <th class="p-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody
+          id="table-equipos"
+          class="divide-y divide-slate-100"
+        ></tbody>
+      </table>
+    </div>
+  </div>
+</div>

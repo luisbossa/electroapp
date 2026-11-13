@@ -1,0 +1,252 @@
+<!-- VISTA: CRONOGRAMAS DE MANTENIMIENTO PREVENTIVO (PLANIFICACIÓN OPERATIVA) -->
+<div
+  id="view-Cronogramas Mantenimiento Preventivo"
+  class="tab-content hidden space-y-6"
+>
+  <div
+    class="flex flex-col xl:flex-row xl:items-center justify-between gap-4"
+  >
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span
+          class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[11px] font-bold uppercase tracking-wide"
+          >Planificación preventiva</span
+        >
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800">
+        Cronograma de Mantenimiento Preventivo
+      </h2>
+      <p class="text-sm text-slate-500"></p>
+    </div>
+    <div class="cron-filter-bar flex flex-wrap items-center gap-2">
+      <select
+        id="cronograma-filter-year"
+        onchange="renderCronogramaVisitas()"
+        class="text-xs border border-slate-200 rounded-lg px-3 py-2 bg-white font-medium"
+      ></select>
+      <select
+        id="cronograma-filter-mes"
+        onchange="renderCronogramaVisitas()"
+        class="text-xs border border-slate-200 rounded-lg px-3 py-2 bg-white font-medium"
+      >
+        <option value="ALL">Vista anual</option>
+        <option value="1">Enero</option>
+        <option value="2">Febrero</option>
+        <option value="3">Marzo</option>
+        <option value="4">Abril</option>
+        <option value="5">Mayo</option>
+        <option value="6">Junio</option>
+        <option value="7">Julio</option>
+        <option value="8">Agosto</option>
+        <option value="9">Setiembre</option>
+        <option value="10">Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
+      </select>
+      <select
+        id="cronograma-filter-estado"
+        onchange="renderCronogramaVisitas()"
+        class="text-xs border border-slate-200 rounded-lg px-3 py-2 bg-white font-medium"
+      >
+        <option value="ALL">Todos los estados</option>
+        <option>Pendiente</option>
+        <option>Programada</option>
+        <option>Realizada</option>
+        <option>Parcial</option>
+        <option>Vencida</option>
+      </select>
+      <button
+        onclick="openCronogramaModal()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm"
+      >
+        <i data-lucide="plus" class="w-4 h-4"></i> Nuevo plan
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="cron-kpi-grid grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3"
+  >
+    <div
+      class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"
+    >
+      <p class="text-[10px] font-bold text-slate-400 uppercase">
+        Visitas del mes
+      </p>
+      <h3
+        id="cron-kpi-mes"
+        class="text-2xl font-black text-blue-600 mt-1"
+      >
+        0
+      </h3>
+    </div>
+    <div
+      class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"
+    >
+      <p class="text-[10px] font-bold text-slate-400 uppercase">
+        Por coordinar
+      </p>
+      <h3
+        id="cron-kpi-coordinar"
+        class="text-2xl font-black text-amber-600 mt-1"
+      >
+        0
+      </h3>
+    </div>
+    <div
+      class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"
+    >
+      <p class="text-[10px] font-bold text-slate-400 uppercase">
+        Programadas
+      </p>
+      <h3
+        id="cron-kpi-programadas"
+        class="text-2xl font-black text-indigo-600 mt-1"
+      >
+        0
+      </h3>
+    </div>
+    <div
+      class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"
+    >
+      <p class="text-[10px] font-bold text-slate-400 uppercase">
+        Realizadas
+      </p>
+      <h3
+        id="cron-kpi-realizadas"
+        class="text-2xl font-black text-emerald-600 mt-1"
+      >
+        0
+      </h3>
+    </div>
+    <div
+      class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"
+    >
+      <p class="text-[10px] font-bold text-slate-400 uppercase">
+        Vencidas
+      </p>
+      <h3
+        id="cron-kpi-vencidas"
+        class="text-2xl font-black text-red-600 mt-1"
+      >
+        0
+      </h3>
+    </div>
+    <div
+      class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"
+    >
+      <p class="text-[10px] font-bold text-slate-400 uppercase">
+        Cumplimiento anual
+      </p>
+      <h3
+        id="cron-kpi-cumplimiento"
+        class="text-2xl font-black text-slate-800 mt-1"
+      >
+        0%
+      </h3>
+    </div>
+  </div>
+
+  <div
+    id="cron-alert-panel"
+    class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4"
+  ></div>
+
+  <div
+    class="cron-calendar-shell bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+  >
+    <div
+      class="p-4 border-b border-slate-200 bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-2"
+    >
+      <div>
+        <h3
+          class="font-bold text-slate-800 text-sm flex items-center gap-2"
+        >
+          <i
+            data-lucide="calendar-days"
+            class="w-4 h-4 text-blue-600"
+          ></i>
+          Matriz anual de visitas
+        </h3>
+        <p class="text-xs text-slate-400 mt-1">
+          Toque un icono para registrar la visita y el reporte
+          correspondiente a cada activo.
+        </p>
+      </div>
+      <div
+        class="cron-legend flex flex-wrap items-center gap-1.5 text-[10px] font-bold"
+      >
+        <span class="cron-legend-item pending">○ Pendiente</span
+        ><span class="cron-legend-item scheduled">◷ Programada</span
+        ><span class="cron-legend-item done">✓ Realizada</span
+        ><span class="cron-legend-item partial">◑ Parcial</span
+        ><span class="cron-legend-item overdue">! Vencida</span>
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs min-w-[1150px]">
+        <thead
+          class="bg-white text-slate-500 font-semibold border-b border-slate-200"
+        >
+          <tr>
+            <th class="p-3 min-w-[220px]">Contrato / Servicio</th>
+            <th class="p-3 min-w-[160px]">Proveedor</th>
+            <th class="p-3 min-w-[110px]">Frecuencia</th>
+            <th class="p-3 text-center">Ene</th>
+            <th class="p-3 text-center">Feb</th>
+            <th class="p-3 text-center">Mar</th>
+            <th class="p-3 text-center">Abr</th>
+            <th class="p-3 text-center">May</th>
+            <th class="p-3 text-center">Jun</th>
+            <th class="p-3 text-center">Jul</th>
+            <th class="p-3 text-center">Ago</th>
+            <th class="p-3 text-center">Set</th>
+            <th class="p-3 text-center">Oct</th>
+            <th class="p-3 text-center">Nov</th>
+            <th class="p-3 text-center">Dic</th>
+            <th class="p-3 text-right min-w-[140px]">Acciones</th>
+          </tr>
+        </thead>
+        <tbody
+          id="table-cronograma-visitas"
+          class="divide-y divide-slate-100"
+        ></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div
+    id="cron-monthly-card"
+    class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hidden"
+  >
+    <div class="p-4 border-b border-slate-200 bg-slate-50">
+      <h3
+        id="cron-monthly-title"
+        class="font-bold text-slate-800 text-sm"
+      ></h3>
+      <p class="text-xs text-slate-400 mt-1">
+        Vista operativa para coordinación y seguimiento del mes
+        seleccionado.
+      </p>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm min-w-[720px]">
+        <thead
+          class="bg-white text-slate-500 font-semibold border-b border-slate-200 text-xs"
+        >
+          <tr>
+            <th class="p-4">Servicio</th>
+            <th class="p-4">Proveedor</th>
+            <th class="p-4">Fecha prevista</th>
+            <th class="p-4">Estado</th>
+            <th class="p-4 text-right">Actualizar</th>
+          </tr>
+        </thead>
+        <tbody
+          id="table-cronograma-mensual"
+          class="divide-y divide-slate-100 text-xs"
+        ></tbody>
+      </table>
+    </div>
+  </div>
+</div>

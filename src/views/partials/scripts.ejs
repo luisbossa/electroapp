@@ -1,0 +1,9 @@
+<%# Los módulos del cliente se cargan en orden porque comparten funciones y datos globales. %>
+<% [
+  'datos-iniciales', 'acceso-usuarios', 'login', 'cronograma', 'mantenimiento-preventivo',
+  'navegacion-ubicaciones', 'ayudas-equipos', 'equipos', 'bodega', 'procedimientos-contratos',
+  'averias', 'ordenes-trabajo', 'salidas', 'proveedores', 'vistas-reportes-inicio',
+  'adaptador-servidor' /* siempre al final: conecta el cliente con la API */
+].forEach(modulo => { %>
+    <script src="/js/<%= modulo %>.js?v=<%= version %>"></script>
+<% }) %>

@@ -1,0 +1,185 @@
+<!-- MODAL: EXPEDIENTE DE SALIDA -->
+<div
+  id="modal-historial-salida"
+  class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4 overflow-y-auto"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[92vh] flex flex-col border border-slate-200 overflow-hidden my-auto"
+  >
+    <div
+      class="px-6 py-4 bg-gradient-to-r from-slate-900 to-blue-900 text-white flex items-center justify-between shrink-0 shadow-sm"
+    >
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="p-1.5 bg-blue-600 rounded-lg text-white"
+            ><i data-lucide="truck" class="w-5 h-5"></i
+          ></span>
+          <h3 id="hist-salida-title" class="font-extrabold text-lg">
+            Expediente de Salida #SAL-1
+          </h3>
+        </div>
+        <p id="hist-salida-subtitle" class="text-xs text-blue-200 mt-0.5">
+          Detalles de traslado y custodia
+        </p>
+      </div>
+      <button
+        onclick="closeModal('modal-historial-salida')"
+        class="text-slate-300 hover:text-white transition"
+      >
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-slate-50/50">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+        <div
+          class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm"
+        >
+          <p class="text-[11px] font-semibold text-slate-400 uppercase">
+            Estado
+          </p>
+          <p
+            id="hist-badge-estado"
+            class="mt-1 font-bold text-xs px-2.5 py-1 rounded-full inline-block bg-blue-100 text-blue-800"
+          >
+            -
+          </p>
+        </div>
+        <div
+          class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm"
+        >
+          <p class="text-[11px] font-semibold text-slate-400 uppercase">
+            Fecha Salida
+          </p>
+          <p
+            id="hist-fecha-salida"
+            class="mt-1 font-bold text-slate-800 text-xs"
+          >
+            -
+          </p>
+        </div>
+        <div
+          class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm"
+        >
+          <p class="text-[11px] font-semibold text-slate-400 uppercase">
+            Prevista Retorno
+          </p>
+          <p
+            id="hist-fecha-prevista"
+            class="mt-1 font-bold text-slate-800 text-xs"
+          >
+            -
+          </p>
+        </div>
+        <div
+          class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm"
+        >
+          <p class="text-[11px] font-semibold text-slate-400 uppercase">
+            Retorno Real
+          </p>
+          <p
+            id="hist-fecha-devolucion"
+            class="mt-1 font-bold text-slate-800 text-xs text-emerald-600"
+          >
+            -
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div>
+            <p class="text-slate-400 font-medium">Equipo Médico:</p>
+            <p id="hist-eq-nombre" class="font-bold text-slate-800 text-sm">
+              -
+            </p>
+          </div>
+          <div>
+            <p class="text-slate-400 font-medium">Activo / Serie:</p>
+            <p id="hist-eq-activo-serie" class="font-bold text-slate-800">
+              -
+            </p>
+          </div>
+          <div>
+            <p class="text-slate-400 font-medium">Proveedor Destino:</p>
+            <p id="hist-proveedor" class="font-semibold text-slate-800">
+              -
+            </p>
+          </div>
+          <div>
+            <p class="text-slate-400 font-medium">Motivo:</p>
+            <p id="hist-motivo" class="font-semibold text-slate-800">-</p>
+          </div>
+          <div>
+            <p class="text-slate-400 font-medium">Autorizado por:</p>
+            <p id="hist-autoriza" class="font-semibold text-slate-800">-</p>
+          </div>
+          <div>
+            <p class="text-slate-400 font-medium">Retirado por:</p>
+            <p id="hist-retira" class="font-semibold text-slate-800">-</p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4"
+      >
+        <div
+          class="flex items-center justify-between border-b border-slate-100 pb-2"
+        >
+          <h4
+            class="text-xs font-bold text-blue-600 uppercase tracking-wider"
+          >
+            Bitácora de Avances
+          </h4>
+          <span
+            id="hist-comentarios-count"
+            class="text-[11px] text-slate-400 font-semibold"
+            >0 notas</span
+          >
+        </div>
+        <div
+          class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2"
+        >
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="hist-nuevo-comentario"
+              placeholder="Escribe un avance recibido..."
+              class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-white"
+            />
+            <button
+              onclick="addAvanceFromExpediente()"
+              class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold whitespace-nowrap transition"
+            >
+              Agregar
+            </button>
+          </div>
+        </div>
+        <div
+          id="hist-timeline-container"
+          class="space-y-3 max-h-56 overflow-y-auto pr-1"
+        ></div>
+      </div>
+    </div>
+
+    <div
+      class="p-4 bg-white border-t border-slate-200 flex justify-between items-center shrink-0"
+    >
+      <button
+        onclick="window.print()"
+        class="px-4 py-2 bg-slate-800 hover:bg-black text-white rounded-lg text-xs font-semibold flex items-center gap-2 transition"
+      >
+        <i data-lucide="printer" class="w-4 h-4"></i> Imprimir
+      </button>
+      <button
+        onclick="closeModal('modal-historial-salida')"
+        class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>

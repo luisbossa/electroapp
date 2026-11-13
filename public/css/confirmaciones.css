@@ -1,0 +1,86 @@
+/* Estilos extraídos sin alterar sus reglas originales. */
+/* Liquid Glass para confirmaciones destructivas. Solo cambia la presentación. */
+#modal-eliminar-generico,
+#modal-eliminar-equipo {
+  background: rgba(15, 23, 42, .30) !important;
+  backdrop-filter: blur(14px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(135%) !important;
+  z-index: 200000 !important;
+}
+#modal-eliminar-generico > div,
+#modal-eliminar-equipo > div {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(145deg, rgba(255,255,255,.70), rgba(248,250,252,.48)) !important;
+  border: 1px solid rgba(255,255,255,.82) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 30px 90px rgba(15,23,42,.30), inset 0 1px 0 rgba(255,255,255,.92), inset 0 -1px 0 rgba(255,255,255,.25) !important;
+  backdrop-filter: blur(30px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(165%) !important;
+  overflow: hidden !important;
+  animation: deleteGlassIn .28s cubic-bezier(.2,.8,.2,1) both;
+}
+#modal-eliminar-generico > div::before,
+#modal-eliminar-equipo > div::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle at 18% 0%, rgba(255,255,255,.92), transparent 35%), linear-gradient(120deg, rgba(255,255,255,.24), transparent 45%);
+}
+#modal-eliminar-generico > div > div,
+#modal-eliminar-equipo > div > div { background: transparent !important; }
+#modal-eliminar-generico > div > div:first-child,
+#modal-eliminar-equipo > div > div:first-child {
+  border-bottom-color: rgba(255,255,255,.50) !important;
+}
+#modal-eliminar-generico > div > div:last-child,
+#modal-eliminar-equipo > div > div:last-child {
+  border-top-color: rgba(255,255,255,.52) !important;
+  background: rgba(255,255,255,.18) !important;
+}
+#modal-eliminar-generico h3,
+#modal-eliminar-equipo h3 { color:#0f172a !important; text-shadow:0 1px 0 rgba(255,255,255,.60); }
+#modal-eliminar-generico h3 + p,
+#modal-eliminar-equipo h3 + p { color:#64748b !important; }
+#modal-eliminar-generico > div > div:first-child .w-10,
+#modal-eliminar-equipo > div > div:first-child .w-10 {
+  background: rgba(254,226,226,.64) !important;
+  border-color: rgba(248,113,113,.30) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.70), 0 8px 22px rgba(220,38,38,.10);
+}
+#modal-eliminar-generico > div > div:first-child .w-10 svg,
+#modal-eliminar-equipo > div > div:first-child .w-10 svg { color:#dc2626 !important; }
+#modal-eliminar-generico .bg-red-50,
+#modal-eliminar-equipo .bg-red-50 {
+  background: rgba(254,242,242,.48) !important;
+  border-color: rgba(248,113,113,.28) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.60);
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+#modal-eliminar-generico button[onclick*="close"],
+#modal-eliminar-equipo button[onclick*="close"] {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+#modal-eliminar-generico > div > div:last-child button:first-child,
+#modal-eliminar-equipo > div > div:last-child button:first-child {
+  background: rgba(255,255,255,.46) !important;
+  border-color: rgba(148,163,184,.40) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+#modal-eliminar-generico > div > div:last-child button:last-child,
+#modal-eliminar-equipo > div > div:last-child button:last-child {
+  background: rgba(220,38,38,.90) !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+  box-shadow: 0 10px 24px rgba(220,38,38,.20), inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+#modal-eliminar-generico > div > div:last-child button:last-child:hover,
+#modal-eliminar-equipo > div > div:last-child button:last-child:hover { background: rgba(185,28,28,.94) !important; }
+@keyframes deleteGlassIn { from { opacity:0; transform:scale(.965) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  #modal-eliminar-generico > div,
+  #modal-eliminar-equipo > div { animation:none !important; }
+}

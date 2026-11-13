@@ -1,0 +1,35 @@
+/* Estilos extraídos sin alterar sus reglas originales. */
+    /* Títulos de fichas técnicas limpios: sin franja, sombreado ni fondo tipo subrayado */
+    #modal-equipo-title,
+    #modal-bodega-title {
+      display: inline !important;
+      background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+      box-shadow: none !important;
+      border: 0 !important;
+      border-bottom: 0 !important;
+      outline: 0 !important;
+      text-decoration: none !important;
+      text-shadow: none !important;
+      filter: none !important;
+      padding: 0 !important;
+    }
+
+    #modal-equipo-title::before,
+    #modal-equipo-title::after,
+    #modal-bodega-title::before,
+    #modal-bodega-title::after {
+      content: none !important;
+      display: none !important;
+      background: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    /* Evita que el contenedor inmediato del título genere una franja propia */
+    #modal-equipo-title.parent-fix,
+    #modal-bodega-title.parent-fix {
+      background: transparent !important;
+    }
+  

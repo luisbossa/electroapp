@@ -1,0 +1,243 @@
+<!-- VISTA 3: BODEGA -->
+<div id="view-bodega" class="tab-content hidden space-y-6">
+  <div
+    class="flex flex-col lg:flex-row lg:items-center justify-between gap-4"
+  >
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">
+        Inventario de Bodega y Repuestos
+      </h2>
+      <p class="text-sm text-slate-500"></p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button
+        onclick="openBodegaModal()"
+        class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition"
+      >
+        <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Repuesto
+      </button>
+      <button
+        onclick="openSalidaModal()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition"
+      >
+        <i data-lucide="arrow-right-left" class="w-4 h-4"></i> Registrar
+        Salida
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="inline-flex bg-slate-100 border border-slate-200 rounded-xl p-1 shadow-inner"
+    role="tablist"
+    aria-label="Secciones de bodega"
+  >
+    <button
+      id="bodega-tab-inventario"
+      onclick="showBodegaSection('inventario')"
+      class="bodega-section-tab px-4 py-2 rounded-lg text-sm font-bold bg-white text-emerald-700 shadow-sm flex items-center gap-2"
+      role="tab"
+      aria-selected="true"
+    >
+      <i data-lucide="package" class="w-4 h-4"></i> Inventario
+    </button>
+    <button
+      id="bodega-tab-consumo"
+      onclick="showBodegaSection('consumo')"
+      class="bodega-section-tab px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:text-blue-700 flex items-center gap-2"
+      role="tab"
+      aria-selected="false"
+    >
+      <i data-lucide="chart-no-axes-column" class="w-4 h-4"></i> Salidas y
+      consumo
+    </button>
+  </div>
+
+  <div id="bodega-inventario-panel" class="space-y-6" role="tabpanel">
+    <div class="module-search-shell emerald">
+      <i data-lucide="search" class="module-search-icon"></i
+      ><input
+        id="bodega-search"
+        oninput="renderAll()"
+        autocomplete="off"
+        placeholder="Buscar por descripción del repuesto..."
+        class="module-search-input"
+      />
+    </div>
+
+    <div
+      class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+    >
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead
+            class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200"
+          >
+            <tr>
+              <th class="p-4">Descripción / Categoría</th>
+              <th class="p-4">Códigos SAP / SICOP</th>
+              <th class="p-4">Ubicación</th>
+              <th class="p-4">Stock Actual</th>
+
+              <th class="p-4">Estado</th>
+              <th class="p-4 text-right">Ficha / Eliminar</th>
+            </tr>
+          </thead>
+          <tbody
+            id="table-bodega"
+            class="divide-y divide-slate-100"
+          ></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN INTEGRADA: SALIDA Y CONSUMO DE MATERIALES -->
+  <div
+    id="bodega-consumo-panel"
+    class="hidden space-y-6"
+    role="tabpanel"
+  >
+    <div
+      class="flex flex-col md:flex-row md:items-center justify-between gap-4"
+    >
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">
+          Salida y Consumo de Materiales
+        </h2>
+        <p class="text-sm text-slate-500">
+          Despacho de repuestos a equipos y análisis estadístico del
+          consumo anual.
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div
+          class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm"
+        >
+          <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
+          <label class="text-xs font-bold text-slate-600">Año:</label>
+          <select
+            id="consumo-year-select"
+            onchange="renderConsumoChart()"
+            class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ></select>
+        </div>
+        <button
+          onclick="openSalidaModal()"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition"
+        >
+          <i data-lucide="arrow-right-left" class="w-4 h-4"></i>
+          Registrar Salida
+        </button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD DE CONSUMO ANUAL -->
+    <div
+      class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4"
+    >
+      <div
+        class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-100 pb-3"
+      >
+        <div>
+          <h3
+            class="font-bold text-slate-800 text-base flex items-center gap-2"
+          >
+            <i
+              data-lucide="chart-no-axes-column"
+              class="w-5 h-5 text-blue-600"
+            ></i>
+            Consumo Anual de Repuestos y Accesorios
+          </h3>
+          <p class="text-xs text-slate-400">
+            Total acumulado de unidades despachadas de todos los
+            repuestos registrados.
+          </p>
+        </div>
+        <div
+          id="chart-total-consumo-badge"
+          class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-bold text-xs"
+        >
+          0 unidades consumidas
+        </div>
+      </div>
+
+      <div
+        class="relative w-full"
+        style="min-height: 250px; height: 250px"
+      >
+        <canvas id="chartConsumoRepuestos"></canvas>
+      </div>
+
+      <div id="chart-native-bars" class="space-y-2 pt-2"></div>
+    </div>
+
+    <div
+      class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+    >
+      <div
+        class="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center"
+      >
+        <span
+          class="text-xs font-bold text-slate-600 uppercase tracking-wide flex items-center gap-2"
+        >
+          <i data-lucide="table" class="w-4 h-4 text-blue-600"></i>
+          Desglose Completo de Repuestos en el Año
+        </span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead
+            class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200"
+          >
+            <tr>
+              <th class="p-4">Repuesto / Accesorio</th>
+              <th class="p-4">Categoría</th>
+              <th class="p-4">Cant. Consumida</th>
+              <th class="p-4">Intervenciones</th>
+              <th class="p-4 text-right">Costo Estimado Total</th>
+            </tr>
+          </thead>
+          <tbody
+            id="table-consumo-anual"
+            class="divide-y divide-slate-100"
+          ></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div
+      class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+    >
+      <div
+        class="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center"
+      >
+        <span
+          class="text-xs font-bold text-slate-600 uppercase tracking-wide flex items-center gap-2"
+        >
+          <i data-lucide="list" class="w-4 h-4 text-blue-600"></i>
+          Historial de Despachos Registrados
+        </span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead
+            class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200"
+          >
+            <tr>
+              <th class="p-4">Fecha</th>
+              <th class="p-4">Movimiento</th>
+              <th class="p-4">Repuesto</th>
+              <th class="p-4">Cantidad</th>
+              <th class="p-4">Origen / Destino</th>
+              <th class="p-4">Responsable</th>
+            </tr>
+          </thead>
+          <tbody
+            id="table-movimientos"
+            class="divide-y divide-slate-100"
+          ></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

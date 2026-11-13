@@ -1,0 +1,174 @@
+<!-- MODAL: REGISTRO DE VISITA PREVENTIVA -->
+<div
+  id="modal-cron-visita"
+  class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-[60] p-3 sm:p-5 overflow-y-auto"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl mx-auto my-2 border border-slate-200 overflow-hidden max-h-[96vh] flex flex-col"
+  >
+    <div
+      class="px-5 py-4 bg-gradient-to-r from-blue-900 to-slate-900 text-white flex items-center justify-between shrink-0"
+    >
+      <div>
+        <h3 id="cron-visita-title" class="font-extrabold text-lg">
+          Visita preventiva
+        </h3>
+        <p id="cron-visita-subtitle" class="text-xs text-blue-200"></p>
+      </div>
+      <button
+        type="button"
+        onclick="closeCronVisitaModal()"
+        class="p-2 text-slate-300 hover:text-white"
+      >
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <form
+      onsubmit="saveCronVisita(event)"
+      class="p-4 sm:p-6 space-y-5 overflow-y-auto"
+    >
+      <input type="hidden" id="cron-visita-plan-id" /><input
+        type="hidden"
+        id="cron-visita-mes"
+      />
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-bold text-slate-600 mb-1"
+            >Nombre de la visita</label
+          ><input
+            id="cron-visita-nombre"
+            required
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+            placeholder="Ej. Visita 2 - Mantenimiento preventivo"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1"
+            >N.º de visita</label
+          ><input
+            id="cron-visita-numero"
+            type="number"
+            min="1"
+            required
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-blue-700 mb-1"
+            >Fecha programada*</label
+          ><input
+            id="cron-visita-fecha-programada"
+            type="date"
+            required
+            class="w-full px-3 py-2 border border-blue-300 bg-blue-50 rounded-lg text-sm"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1"
+            >Fecha realizada</label
+          ><input
+            id="cron-visita-fecha"
+            type="date"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          />
+        </div>
+      </div>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4"
+      >
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1"
+            >N.º SOLPED
+            <span class="font-normal text-slate-400"
+              >(opcional)</span
+            ></label
+          ><input
+            id="cron-visita-solped"
+            type="text"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono"
+            placeholder="Ej. 1000123456"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1"
+            >Orden de Pedido
+            <span class="font-normal text-slate-400"
+              >(opcional)</span
+            ></label
+          ><input
+            id="cron-visita-orden-pedido"
+            type="text"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono"
+            placeholder="Ej. 4500123456"
+          />
+        </div>
+      </div>
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <div
+          class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-3"
+        >
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">
+              Activos incluidos
+            </h4>
+            <p class="text-[11px] text-slate-500">
+              Marque los activos atendidos y escriba su reporte de servicio.
+            </p>
+          </div>
+          <button
+            type="button"
+            onclick="toggleCronVisitaItems(true)"
+            class="px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold"
+          >
+            Marcar todos
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs min-w-[760px]">
+            <thead
+              class="bg-white text-slate-500 border-b border-slate-200"
+            >
+              <tr>
+                <th class="p-3 w-16 text-center">Hecho</th>
+                <th class="p-3">Activo</th>
+                <th class="p-3">Equipo / ubicación</th>
+                <th class="p-3 min-w-[220px]">N.º reporte de servicio</th>
+                <th class="p-3">Plazo</th>
+              </tr>
+            </thead>
+            <tbody
+              id="cron-visita-items"
+              class="divide-y divide-slate-100"
+            ></tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1"
+          >Observaciones de la visita</label
+        ><textarea
+          id="cron-visita-observaciones"
+          rows="3"
+          class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          placeholder="Pendientes, equipos no disponibles u otras observaciones..."
+        ></textarea>
+      </div>
+      <div
+        class="pt-3 border-t border-slate-100 flex flex-col-reverse sm:flex-row justify-end gap-2"
+      >
+        <button
+          type="button"
+          onclick="closeCronVisitaModal()"
+          class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg text-sm font-medium"
+        >
+          Cerrar</button
+        ><button
+          type="submit"
+          class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-sm"
+        >
+          Guardar visita
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

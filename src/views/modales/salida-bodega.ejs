@@ -1,0 +1,87 @@
+<!-- MODAL: SALIDA DE BODEGA -->
+<div
+  id="modal-salida"
+  class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center hidden z-50"
+>
+  <div
+    class="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-slate-200"
+  >
+    <div
+      class="px-6 py-4 border-b border-slate-100 flex items-center justify-between"
+    >
+      <h3 class="font-bold text-slate-800">Registrar Salida de Material</h3>
+      <button
+        onclick="closeModal('modal-salida')"
+        class="text-slate-400 hover:text-slate-600"
+      >
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <form onsubmit="saveSalida(event)" class="p-6 space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1"
+          >Repuesto / Material*</label
+        ><input
+          id="salida-repuesto"
+          data-smart-search="repuesto"
+          required
+          autocomplete="off"
+          placeholder="Digite la descripción del repuesto"
+          class="smart-search-input w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+        /><datalist id="salida-repuesto-list"></datalist>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Cantidad*</label
+          ><input
+            type="number"
+            id="salida-cant"
+            required
+            min="1"
+            value="1"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Técnico*</label
+          ><input
+            type="text"
+            id="salida-tecnico"
+            required
+            placeholder="Ing. Ramírez"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          />
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1"
+          >Equipo Destino*</label
+        ><input
+          id="salida-equipo"
+          data-smart-search="equipo"
+          required
+          autocomplete="off"
+          placeholder="Digite el número de activo"
+          class="smart-search-input w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+        /><datalist id="salida-equipo-list"></datalist>
+      </div>
+      <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+        <button
+          type="button"
+          onclick="closeModal('modal-salida')"
+          class="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700"
+        >
+          Registrar Salida
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

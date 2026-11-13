@@ -1,0 +1,43 @@
+/* Apilamiento global de capas (z-index).
+   Todo el sistema, incluido el menú lateral y su opción activa, queda por debajo del
+   backdrop de SweetAlert2; únicamente el cuadro emergente queda al frente. */
+
+aside,
+#sidebar,
+.sidebar {
+  position: relative;
+  z-index: 1 !important;
+}
+
+/* Evita que la opción activa del menú cree una capa por encima del backdrop. */
+aside .nav-btn,
+#sidebar .nav-btn,
+.sidebar .nav-btn {
+  position: relative !important;
+  z-index: auto !important;
+  isolation: auto !important;
+}
+
+/* SweetAlert2: el backdrop cubre uniformemente toda la interfaz. */
+.swal2-container {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 100000 !important;
+}
+
+.swal2-container.swal2-backdrop-show,
+.swal2-container.swal2-noanimation {
+  background: rgba(15, 23, 42, 0.58) !important;
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+
+.swal2-popup {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Los modales propios del sistema permanecen por debajo de SweetAlert2. */
+[id^="modal-"] {
+  z-index: 9000;
+}

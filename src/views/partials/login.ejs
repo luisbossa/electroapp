@@ -1,0 +1,89 @@
+<%# Pantalla de ingreso. Estilos: public/css/login.css · Lógica: public/js/login.js %>
+<!-- ================= LOGIN DEL SISTEMA (estilos: css/login.css, lógica: js/login.js) ================= -->
+<div id="login-screen">
+  <div class="login-hero">
+    <img
+      src="/assets/fondo-login.png"
+      alt="Gestión de Equipo Médico - Área de Salud Naranjo"
+      width="1536"
+      height="1024"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
+
+  <div class="login-panel">
+    <section class="login-card" aria-labelledby="login-title">
+      <header class="login-header">
+        <p class="login-kicker">Acceso al sistema</p>
+        <h1 id="login-title" class="login-title">Bienvenido</h1>
+        <p class="login-subtitle">Ingresa tus credenciales para continuar.</p>
+      </header>
+
+      <form class="login-form" onsubmit="loginUser(event)">
+        <div id="login-error" class="login-error hidden" role="alert">
+          <i data-lucide="circle-alert"></i><span></span>
+        </div>
+
+        <div>
+          <label for="login-usuario" class="login-label">Usuario</label>
+          <div class="login-input-wrap">
+            <i data-lucide="user" class="login-input-icon"></i>
+            <input
+              id="login-usuario"
+              class="login-input"
+              type="text"
+              required
+              autocomplete="username"
+              autocapitalize="none"
+              spellcheck="false"
+              placeholder="Ingrese su usuario"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="login-password" class="login-label">Contraseña</label>
+          <div class="login-input-wrap">
+            <i data-lucide="lock-keyhole" class="login-input-icon"></i>
+            <input
+              id="login-password"
+              class="login-input login-input--password"
+              type="password"
+              required
+              autocomplete="current-password"
+              placeholder="Ingrese su contraseña"
+            />
+            <button
+              id="login-toggle-password"
+              type="button"
+              class="login-eye"
+              onclick="toggleLoginPassword()"
+              aria-label="Mostrar contraseña"
+              aria-pressed="false"
+            >
+              <i data-lucide="eye" class="icon-eye"></i>
+              <i data-lucide="eye-off" class="icon-eye-off"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="login-btn login-btn--primary">
+          <i data-lucide="log-in"></i> Iniciar sesión
+        </button>
+      </form>
+
+      <div class="login-divider">o continúa sin cuenta</div>
+
+      <button type="button" class="login-btn login-btn--ghost" onclick="loginAsGuest()">
+        <i data-lucide="eye"></i> Entrar como invitado
+      </button>
+
+      <footer class="login-footer">
+        <span>Ingeniería y Mantenimiento</span>
+        <span>Autor Ing. Gabriel Salas</span>
+        <strong>EQM · ASN</strong>
+      </footer>
+    </section>
+  </div>
+</div>

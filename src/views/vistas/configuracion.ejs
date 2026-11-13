@@ -1,0 +1,61 @@
+<!-- VISTA 7: CONFIGURACIÓN -->
+<div id="view-configuracion" class="tab-content hidden space-y-6">
+  <div>
+    <h2 class="text-2xl font-bold text-slate-800">Configuración</h2>
+    <p class="text-sm text-slate-500">
+      Ajustes y respaldos del sistema local.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div
+      class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3"
+    >
+      <h3 class="font-bold text-slate-800">Hoja de Vida de Equipos</h3>
+      <p class="text-sm text-slate-600">
+        Genera un reporte imprimible del estado del inventario para
+        auditorías o acreditación.
+      </p>
+      <button
+        onclick="window.print()"
+        class="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-black transition"
+      >
+        <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Reporte
+        General
+      </button>
+    </div>
+
+    <div
+      class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3"
+    >
+      <h3 class="font-bold text-slate-800">Exportación de Datos</h3>
+      <p class="text-sm text-slate-600">
+        Descarga la base de datos completa en formato JSON para copias
+        de respaldo.
+      </p>
+      <button
+        onclick="exportJSON()"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition"
+      >
+        <i data-lucide="download" class="w-4 h-4"></i> Exportar Base de
+        Datos
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4"
+  >
+    <h3 class="font-bold text-slate-800">Restauración de Sistema</h3>
+    <p class="text-sm text-slate-600">
+      Si deseas reiniciar la aplicación con los datos de fábrica de
+      demostración:
+    </p>
+    <button
+      onclick="resetData()"
+      class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition"
+    >
+      Restaurar Datos de Fábrica
+    </button>
+  </div>
+</div>

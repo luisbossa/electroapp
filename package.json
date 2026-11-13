@@ -1,0 +1,23 @@
+{
+  "name": "gestion-equipo-medico",
+  "version": "6.0.0",
+  "description": "Gestión de Equipo Médico - Área de Salud Naranjo (Node.js + Express + EJS + SQLite)",
+  "private": true,
+  "type": "commonjs",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --env-file-if-exists=.env --watch server.js",
+    "db:reset-admin": "node --env-file-if-exists=.env scripts/restablecer-admin.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "ejs": "^7.0.2",
+    "express": "^4.22.3",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.19.0"
+  }
+}

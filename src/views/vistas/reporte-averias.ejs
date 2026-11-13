@@ -1,0 +1,49 @@
+<!-- VISTA: REPORTE DE AVERÍAS / MTO CORRECTIVO -->
+<div id="view-reporte-averias" class="tab-content hidden space-y-6">
+  <div
+    class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+  >
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">
+        Reporte de Averías / Mantenimiento Correctivo
+      </h2>
+      <p class="text-sm text-slate-500"></p>
+    </div>
+    <button
+      onclick="openAveriaModal()"
+      class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition shrink-0"
+    >
+      <i data-lucide="plus" class="w-4 h-4"></i> Nuevo Reporte de Avería
+    </button>
+  </div>
+
+  <div
+    class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+  >
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead
+          class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200"
+        >
+          <tr>
+            <th class="p-4">Nº Avería</th>
+            <th class="p-4">Fecha / Hora</th>
+            <th class="p-4">Equipo Afectado</th>
+            <th class="p-4">Sede / Servicio</th>
+            <th class="p-4">Reportado Por</th>
+            <th class="p-4">Prioridad</th>
+            <th class="p-4">Condición</th>
+            <th class="p-4">Tiempo Indisp.</th>
+            <th class="p-4">Estado</th>
+            <th class="p-4">Último Avance</th>
+            <th class="p-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody
+          id="table-averias"
+          class="divide-y divide-slate-100"
+        ></tbody>
+      </table>
+    </div>
+  </div>
+</div>

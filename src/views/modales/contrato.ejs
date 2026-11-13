@@ -1,0 +1,157 @@
+<!-- MODAL: REGISTRAR / EDITAR CONTRATO DERIVADO -->
+<div
+  id="modal-contrato"
+  class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4"
+>
+  <div
+    class="bg-white rounded-xl shadow-2xl w-full max-w-xl border border-slate-200 overflow-hidden my-auto max-h-[90vh] flex flex-col"
+  >
+    <div
+      class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-emerald-50 shrink-0"
+    >
+      <h3 id="modal-cont-title" class="font-bold text-emerald-950 text-lg">
+        Registrar Contrato Derivado
+      </h3>
+      <button
+        onclick="closeModal('modal-contrato')"
+        class="text-slate-400 hover:text-slate-600"
+      >
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <form
+      onsubmit="saveContrato(event)"
+      class="p-6 space-y-4 overflow-y-auto flex-1"
+    >
+      <input type="hidden" id="cont-id" />
+      <input type="hidden" id="cont-proc-id" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Nº de Contrato*</label
+          >
+          <input
+            type="text"
+            id="cont-numero"
+            required
+            placeholder="CNT-2026-01"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-bold"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Nombre / Título del Contrato*</label
+          >
+          <input
+            type="text"
+            id="cont-nombre"
+            required
+            placeholder="Mantenimiento para Monitores..."
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium"
+          />
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Nº de Certificación Presupuestaria*</label
+          >
+          <input
+            type="text"
+            id="cont-certificacion"
+            required
+            placeholder="CP-2026-9921"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Proveedor Adjudicado*</label
+          >
+          <select
+            id="cont-proveedor"
+            required
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white font-medium"
+          ></select>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Monto Anual*</label
+          >
+          <div class="flex gap-1.5">
+            <select
+              id="cont-moneda"
+              class="w-20 px-2 py-2 border border-slate-200 rounded-lg text-xs font-bold bg-slate-100"
+            >
+              <option value="₡">₡ CRC</option>
+              <option value="$">$ USD</option>
+            </select>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              id="cont-monto"
+              required
+              placeholder="5000000.00"
+              class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-bold font-mono"
+            />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Fecha Inicio Vigencia*</label
+          >
+          <input
+            type="date"
+            id="cont-inicio"
+            required
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          />
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Fecha Fin Vigencia*</label
+          >
+          <input
+            type="date"
+            id="cont-fin"
+            required
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          />
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1"
+          >Observaciones / Entregables</label
+        >
+        <textarea
+          id="cont-obs"
+          rows="2"
+          placeholder="Detalle de equipos cubiertos..."
+          class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+        ></textarea>
+      </div>
+      <div
+        class="pt-4 flex justify-end gap-3 border-t border-slate-100 shrink-0"
+      >
+        <button
+          type="button"
+          onclick="closeModal('modal-contrato')"
+          class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg text-sm font-medium"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium shadow-sm"
+        >
+          Guardar Contrato
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<!-- TOP BAR -->
+<header
+  class="bg-white border-b border-slate-200 h-16 flex items-center justify-end px-6 shrink-0"
+>
+  <div class="flex items-center gap-4">
+    <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
+      <div
+        id="session-avatar"
+        class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs"
+      >
+        U
+      </div>
+      <div class="text-xs min-w-[90px]">
+        <p id="session-name" class="font-semibold text-slate-700">
+          Usuario
+        </p>
+        <p id="session-role" class="text-slate-400">Sesión</p>
+      </div>
+      <button
+        onclick="logoutUser()"
+        title="Cerrar sesión"
+        class="p-2 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition"
+      >
+        <i data-lucide="log-out" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+</header>

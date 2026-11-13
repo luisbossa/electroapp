@@ -1,0 +1,85 @@
+<!-- MODAL: CREAR OT -->
+<div
+  id="modal-ot"
+  class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center hidden z-50"
+>
+  <div
+    class="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-slate-200"
+  >
+    <div
+      class="px-6 py-4 border-b border-slate-100 flex items-center justify-between"
+    >
+      <h3 class="font-bold text-slate-800">Crear Órden de Trabajo (OT)</h3>
+      <button
+        onclick="closeModal('modal-ot')"
+        class="text-slate-400 hover:text-slate-600"
+      >
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <form onsubmit="saveOT(event)" class="p-6 space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1"
+          >Equipo Afectado</label
+        ><input
+          id="ot-equipo"
+          data-smart-search="equipo"
+          required
+          autocomplete="off"
+          placeholder="Digite el número de activo"
+          class="smart-search-input w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+        /><datalist id="ot-equipo-list"></datalist>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Tipo</label
+          >
+          <select
+            id="ot-tipo"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          >
+            <option value="Correctivo">Correctivo</option>
+            <option value="Preventivo">Preventivo</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1"
+            >Técnico Asignado</label
+          ><input
+            type="text"
+            id="ot-tecnico"
+            required
+            placeholder="Ing. Ramírez"
+            class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          />
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1"
+          >Diagnóstico</label
+        ><textarea
+          id="ot-falla"
+          required
+          rows="3"
+          class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+        ></textarea>
+      </div>
+      <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+        <button
+          type="button"
+          onclick="closeModal('modal-ot')"
+          class="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"
+        >
+          Crear OT
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
