@@ -27,8 +27,8 @@ Abra **http://localhost:3000** e ingrese con el usuario **`admin`** y la contras
 ## Requisitos
 
 - **Node.js 22.13 o superior** (se probó con Node 26). SQLite viene integrado en Node (`node:sqlite`): no hay que instalar ni compilar nada más.
-- No requiere internet: Tailwind, Lucide, Chart.js y SweetAlert2 se sirven desde el propio servidor (`public/css/tailwind.css` y `public/vendor/`).
-- Si agrega clases de Tailwind nuevas en las vistas o en `public/js/`, regenere los estilos con `npm install` (una vez) y `npm run build`.
+- No requiere internet: Lucide, Chart.js y SweetAlert2 se sirven desde el propio servidor (`public/vendor/`).
+- Los estilos son CSS puro, sin compilación (`public/css/`). Las clases utilitarias (`.flex`, `.p-4`, `.text-slate-700`…) están en `public/css/utilidades.css`; si usa una nueva en las vistas o en `public/js/`, agréguela ahí.
 
 ## Instalación y uso
 
@@ -103,7 +103,6 @@ Para uso real con datos permanentes, ejecútelo en un servidor con disco propio 
 ├── package.json
 ├── .env.example                 Variables de configuración
 ├── web.config                   Publicación en IIS (ver docs/DESPLIEGUE-IIS.md)
-├── tailwind.config.js           Configuración de Tailwind (se compila con npm run build)
 ├── scripts/
 │   ├── restablecer-admin.js     Restablece la contraseña de un administrador
 │   ├── respaldar.js             Respaldo manual de la base (npm run db:respaldar)
@@ -112,7 +111,7 @@ Para uso real con datos permanentes, ejecútelo en un servidor con disco propio 
 ├── logs/                        Registro de la consola cuando corre en IIS
 ├── public/                      Archivos estáticos que descarga el navegador
 │   ├── assets/                  Imágenes (fondo del login)
-│   ├── css/                     Estilos propios + tailwind.css (generado)
+│   ├── css/                     Estilos en CSS puro (utilidades.css, menu-lateral.css, ...)
 │   ├── vendor/                  Lucide, Chart.js y SweetAlert2 (generado)
 │   └── js/                      Lógica de la interfaz (un archivo por módulo)
 └── src/

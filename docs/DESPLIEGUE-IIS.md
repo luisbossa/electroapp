@@ -18,7 +18,7 @@ IIS recibe las visitas y se las pasa a la aplicación de Node.js mediante **Http
    npm ci --omit=dev
    ```
 
-   Solo instala lo necesario para funcionar. Los estilos (`public/css/tailwind.css`) y las librerías (`public/vendor/`) ya vienen generados en el proyecto.
+   Solo instala lo necesario para funcionar. Los estilos (`public/css/`, CSS puro) y las librerías (`public/vendor/`) ya vienen incluidos en el proyecto.
 3. Cree el archivo `.env` a partir de `.env.example` y defina como mínimo:
 
    ```ini

@@ -1,121 +1,101 @@
-<!-- SIDEBAR COMPLETO -->
-<aside
-  class="w-64 bg-brand-dark text-slate-300 flex flex-col justify-between p-4 shadow-lg shrink-0 overflow-y-auto"
->
-  <div>
-    <div
-      class="flex items-center gap-3 px-2 py-3 mb-6 border-b border-slate-700"
-    >
-      <div class="p-2 bg-blue-600 rounded-lg text-white shadow-md">
-        <i data-lucide="activity" class="w-6 h-6"></i>
-      </div>
-      <div>
-        <h1 class="font-bold text-white text-sm leading-tight">
-          GESTIÓN DE EQUIPO MEDICO
-        </h1>
-        <p class="text-xs text-slate-400">
-          Ingenieria y Mantenimiento - EQM - ASN
-        </p>
-      </div>
+<!-- MENÚ LATERAL (estilos en public/css/menu-lateral.css) -->
+<aside class="menu-lateral" aria-label="Menú principal">
+  <div class="menu-marca">
+    <div class="menu-marca-logo">
+      <i data-lucide="activity"></i>
     </div>
+    <div class="menu-marca-texto">
+      <h1>Gestión de Equipo Médico</h1>
+      <p>Ingeniería y Mantenimiento · EQM · ASN</p>
+    </div>
+  </div>
 
-    <nav class="space-y-1 text-sm">
+  <nav class="menu-nav">
+    <div class="menu-grupo">
+      <p class="menu-grupo-titulo">Inventario</p>
       <button
         id="nav-equipos"
         onclick="changeTab('equipos', this)"
-        class="nav-btn active w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition text-left"
+        class="nav-btn active"
+        title="Listado de equipos"
       >
-        <span class="flex items-center gap-3"
-          ><i data-lucide="stethoscope" class="w-4 h-4"></i> Listado
-          Equipos</span
-        >
-        <span
-          id="menu-count-equipos"
-          class="bg-slate-800 text-xs px-2 py-0.5 rounded-full"
-          >0</span
-        >
+        <span class="nav-icono"><i data-lucide="stethoscope"></i></span>
+        <span class="nav-texto">Listado de equipos</span>
+        <span id="menu-count-equipos" class="nav-contador">0</span>
       </button>
       <button
         onclick="changeTab('bodega', this)"
-        class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition text-left"
+        class="nav-btn"
+        title="Inventario de bodega"
       >
-        <span class="flex items-center gap-3"
-          ><i data-lucide="package" class="w-4 h-4"></i> Inventario
-          Bodega</span
-        >
-        <span
-          id="menu-count-bodega"
-          class="bg-slate-800 text-xs px-2 py-0.5 rounded-full"
-          >0</span
-        >
+        <span class="nav-icono"><i data-lucide="package"></i></span>
+        <span class="nav-texto">Inventario de bodega</span>
+        <span id="menu-count-bodega" class="nav-contador">0</span>
       </button>
+    </div>
+
+    <div class="menu-grupo">
+      <p class="menu-grupo-titulo">Operación</p>
       <button
+        id="nav-averias"
         onclick="changeTab('reporte-averias', this)"
-        class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition text-left"
+        class="nav-btn"
+        title="Reporte de averías"
       >
-        <span class="flex items-center gap-3"
-          ><i data-lucide="octagon-alert" class="w-4 h-4"></i> Reporte de
-          Averías</span
-        >
-        <span
-          id="menu-count-averias"
-          class="bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded-full font-bold"
-          >0</span
-        >
+        <span class="nav-icono"><i data-lucide="octagon-alert"></i></span>
+        <span class="nav-texto">Reporte de averías</span>
+        <span id="menu-count-averias" class="nav-contador nav-contador--alerta">0</span>
       </button>
       <button
         onclick="changeTab('salida-equipos', this)"
-        class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition text-left"
+        class="nav-btn"
+        title="Salida de equipos"
       >
-        <span class="flex items-center gap-3"
-          ><i data-lucide="truck" class="w-4 h-4"></i> Salida de
-          Equipos</span
-        >
-        <span
-          id="menu-count-salida-equipos"
-          class="bg-blue-500/20 text-blue-300 text-xs px-2 py-0.5 rounded-full font-bold"
-          >0</span
-        >
-      </button>
-      <button
-        onclick="changeTab('procedimientos-contratos', this)"
-        class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition text-left"
-      >
-        <span class="flex items-center gap-3"
-          ><i data-lucide="file-badge" class="w-4 h-4"></i> Procedimientos /
-          Contratos</span
-        >
-        <span
-          id="menu-count-procedimientos"
-          class="bg-slate-800 text-xs px-2 py-0.5 rounded-full"
-          >0</span
-        >
+        <span class="nav-icono"><i data-lucide="truck"></i></span>
+        <span class="nav-texto">Salida de equipos</span>
+        <span id="menu-count-salida-equipos" class="nav-contador nav-contador--info">0</span>
       </button>
       <button
         onclick="changeTab('Cronogramas Mantenimiento Preventivo', this)"
-        class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-left"
+        class="nav-btn"
+        title="Cronogramas de mantenimiento preventivo"
       >
-        <span class="flex items-center gap-3"
-          ><i data-lucide="calendar" class="w-4 h-4"></i> Cronogramas
-          Mantenimiento Preventivo</span
-        >
+        <span class="nav-icono"><i data-lucide="calendar"></i></span>
+        <span class="nav-texto">Mantenimiento preventivo</span>
+      </button>
+    </div>
+
+    <div class="menu-grupo">
+      <p class="menu-grupo-titulo">Administración</p>
+      <button
+        onclick="changeTab('procedimientos-contratos', this)"
+        class="nav-btn"
+        title="Procedimientos y contratos"
+      >
+        <span class="nav-icono"><i data-lucide="file-badge"></i></span>
+        <span class="nav-texto">Procedimientos y contratos</span>
+        <span id="menu-count-procedimientos" class="nav-contador">0</span>
       </button>
       <button
         onclick="changeTab('proveedores', this)"
-        class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-left"
+        class="nav-btn"
+        title="Proveedores"
       >
-        <i data-lucide="building-2" class="w-4 h-4"></i> Proveedores
+        <span class="nav-icono"><i data-lucide="building-2"></i></span>
+        <span class="nav-texto">Proveedores</span>
       </button>
-    </nav>
-  </div>
+    </div>
+  </nav>
 
-  <div class="border-t border-slate-700 pt-3 mt-4 space-y-1">
+  <div class="menu-pie">
     <button
       id="nav-usuarios"
       onclick="changeTab('usuarios', this)"
-      class="nav-btn w-full flex items-center gap-3 px-3 py-2 rounded-lg transition text-sm hidden"
+      class="nav-btn hidden"
+      title="Administración de usuarios"
     >
-      <i data-lucide="users" class="w-4 h-4"></i> Administración de Usuarios
+      <span class="nav-icono"><i data-lucide="users"></i></span>
+      <span class="nav-texto">Administración de usuarios</span>
     </button>
   </div>
 </aside>

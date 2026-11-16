@@ -12,9 +12,8 @@
     "start": "node --env-file-if-exists=.env server.js",
     "dev": "node --env-file-if-exists=.env --watch server.js",
     "db:reset-admin": "node --env-file-if-exists=.env scripts/restablecer-admin.js",
-    "build:css": "tailwindcss -i ./src/estilos/tailwind.css -o ./public/css/tailwind.css --minify",
     "build:vendor": "node scripts/construir-recursos.js",
-    "build": "npm run build:vendor && npm run build:css",
+    "build": "npm run build:vendor",
     "db:respaldar": "node scripts/respaldar.js"
   },
   "dependencies": {
@@ -27,7 +26,6 @@
   "devDependencies": {
     "chart.js": "4.4.1",
     "lucide": "0.460.0",
-    "sweetalert2": "11.14.5",
-    "tailwindcss": "3.4.16"
+    "sweetalert2": "11.14.5"
   }
 }
