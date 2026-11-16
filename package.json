@@ -14,7 +14,8 @@
     "db:reset-admin": "node --env-file-if-exists=.env scripts/restablecer-admin.js",
     "build:css": "tailwindcss -i ./src/estilos/tailwind.css -o ./public/css/tailwind.css --minify",
     "build:vendor": "node scripts/construir-recursos.js",
-    "build": "npm run build:vendor && npm run build:css"
+    "build": "npm run build:vendor && npm run build:css",
+    "db:respaldar": "node scripts/respaldar.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

@@ -3,5 +3,5 @@ data/
 .env
 node_modules/
 web.config
-iisnode/
+logs/
 *.log

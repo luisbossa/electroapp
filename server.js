@@ -4,6 +4,7 @@ const os = require('node:os');
 const config = require('./src/config');
 const { sembrar } = require('./src/database/semilla');
 const { db } = require('./src/database/conexion');
+const { iniciarRespaldosAutomaticos } = require('./src/database/respaldo');
 
 console.log(`Base de datos: ${config.baseDatos}`);
 sembrar();
@@ -11,6 +12,7 @@ sembrar();
 const app = require('./src/app');
 
 const servidor = app.listen(config.puerto, config.host, () => {
+  iniciarRespaldosAutomaticos();
   console.log(`\nGestión de Equipo Médico v${config.version} en ejecución:`);
   console.log(`  · Este equipo:  http://localhost:${config.puerto}`);
   const ips = Object.values(os.networkInterfaces()).flat().filter(i => i && i.family === 'IPv4' && !i.internal);

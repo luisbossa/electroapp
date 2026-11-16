@@ -27,7 +27,8 @@ Abra **http://localhost:3000** e ingrese con el usuario **`admin`** y la contras
 ## Requisitos
 
 - **Node.js 22.13 o superior** (se probó con Node 26). SQLite viene integrado en Node (`node:sqlite`): no hay que instalar ni compilar nada más.
-- Conexión a internet en los navegadores: la interfaz carga Tailwind, Lucide, Chart.js y SweetAlert2 desde CDN.
+- No requiere internet: Tailwind, Lucide, Chart.js y SweetAlert2 se sirven desde el propio servidor (`public/css/tailwind.css` y `public/vendor/`).
+- Si agrega clases de Tailwind nuevas en las vistas o en `public/js/`, regenere los estilos con `npm install` (una vez) y `npm run build`.
 
 ## Instalación y uso
 
@@ -59,7 +60,18 @@ npm run db:reset-admin -- admin NuevaClaveSegura
 
 ### Respaldo
 
-Toda la información está en la carpeta `data/`. Para respaldar, detenga el servidor y copie `data/gestion.db`. También puede usar cualquier visor de SQLite (por ejemplo, *DB Browser for SQLite*).
+Toda la información está en `data/gestion.db`. Mientras el servidor está en marcha, se respalda solo cada 24 horas en `data/respaldos/` y se conservan los últimos 30 respaldos. Esto se ajusta con `BACKUP_INTERVAL_HOURS`, `BACKUP_KEEP` y `BACKUP_DIR` en `.env`.
+
+```bash
+npm run db:respaldar             # respaldo manual inmediato
+npm run db:respaldar -- --lista  # lista los respaldos
+```
+
+Cómo restaurar un respaldo: ver [docs/DESPLIEGUE-IIS.md](docs/DESPLIEGUE-IIS.md#restaurar-un-respaldo).
+
+## Publicación en IIS
+
+El proyecto incluye `web.config` para IIS con HttpPlatformHandler. Los requisitos, los permisos y la configuración de respaldos están en **[docs/DESPLIEGUE-IIS.md](docs/DESPLIEGUE-IIS.md)**.
 
 ## Despliegue en Vercel (demostración)
 
@@ -90,12 +102,18 @@ Para uso real con datos permanentes, ejecútelo en un servidor con disco propio 
 ├── vercel.json, .vercelignore   Configuración de despliegue en Vercel
 ├── package.json
 ├── .env.example                 Variables de configuración
+├── web.config                   Publicación en IIS (ver docs/DESPLIEGUE-IIS.md)
+├── tailwind.config.js           Configuración de Tailwind (se compila con npm run build)
 ├── scripts/
-│   └── restablecer-admin.js     Restablece la contraseña de un administrador
-├── data/                        (se crea solo) gestion.db y secreto de sesión — NO subir a git
+│   ├── restablecer-admin.js     Restablece la contraseña de un administrador
+│   ├── respaldar.js             Respaldo manual de la base (npm run db:respaldar)
+│   └── construir-recursos.js    Copia las librerías del navegador a public/vendor
+├── data/                        (se crea solo) gestion.db, respaldos/ y secreto de sesión — NO subir a git
+├── logs/                        Registro de la consola cuando corre en IIS
 ├── public/                      Archivos estáticos que descarga el navegador
 │   ├── assets/                  Imágenes (fondo del login)
-│   ├── css/                     Estilos (base, capas, login, ventanas, fichas, confirmaciones)
+│   ├── css/                     Estilos propios + tailwind.css (generado)
+│   ├── vendor/                  Lucide, Chart.js y SweetAlert2 (generado)
 │   └── js/                      Lógica de la interfaz (un archivo por módulo)
 └── src/
     ├── app.js                   Configuración de Express (vistas, sesiones, rutas, errores)
@@ -103,7 +121,8 @@ Para uso real con datos permanentes, ejecútelo en un servidor con disco propio 
     ├── database/
     │   ├── conexion.js          Conexión SQLite y transacciones
     │   ├── esquema.sql          Tablas
-    │   └── semilla.js           Administrador y datos de demostración iniciales
+    │   ├── semilla.js           Administrador y datos de demostración iniciales
+    │   └── respaldo.js          Respaldos automáticos y manuales de la base
     ├── models/                  M — acceso a datos
     │   ├── usuario.model.js     Usuarios y contraseñas (hash bcrypt)
     │   ├── datos.model.js       Registros de los módulos

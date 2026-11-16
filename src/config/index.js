@@ -7,6 +7,11 @@ const { version } = require('../../package.json');
 
 const RAIZ = path.resolve(__dirname, '..', '..');
 
+// Carga .env aunque el proceso no se inicie con `npm start` (por ejemplo, desde IIS).
+// Las variables ya definidas (web.config, sistema) tienen prioridad sobre el archivo.
+const ARCHIVO_ENV = path.join(RAIZ, '.env');
+if (fs.existsSync(ARCHIVO_ENV)) process.loadEnvFile(ARCHIVO_ENV);
+
 /**
  * En Vercel (serverless) el disco del proyecto es de solo lectura y temporal:
  * la base se crea en /tmp y se reinicia con los datos de demostración en cada arranque.
@@ -45,7 +50,17 @@ module.exports = {
   host: process.env.HOST || '0.0.0.0',
   /** Detrás de un proxy HTTPS (Vercel, IIS, Nginx): necesario para cookies seguras e IP real. */
   confiarProxy: enVercel || process.env.TRUST_PROXY === 'true',
+  /** Cookie solo por HTTPS. Por defecto sigue a TRUST_PROXY; en IIS con HTTP interno se fija en false. */
+  cookieSegura: process.env.COOKIE_SECURE ? process.env.COOKIE_SECURE === 'true' : (enVercel || process.env.TRUST_PROXY === 'true'),
   baseDatos: path.join(DIR_DATOS, process.env.DB_FILE || 'gestion.db'),
+  respaldos: {
+    /** Cada cuántas horas se respalda automáticamente (0 = desactivado). */
+    intervaloHoras: process.env.BACKUP_INTERVAL_HOURS !== undefined ? Number(process.env.BACKUP_INTERVAL_HOURS) : 24,
+    /** Cuántos respaldos se conservan (los más antiguos se borran). */
+    conservar: Math.max(1, Number(process.env.BACKUP_KEEP) || 30),
+    /** Carpeta de respaldos. Recomendado: otro disco o una carpeta de red. */
+    carpeta: process.env.BACKUP_DIR ? path.resolve(RAIZ, process.env.BACKUP_DIR) : path.join(DIR_DATOS, 'respaldos'),
+  },
   sesion: {
     secreto: obtenerSecretoSesion(),
     duracionMs: (Number(process.env.SESSION_HOURS) || 10) * 60 * 60 * 1000,

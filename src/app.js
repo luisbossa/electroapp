@@ -45,7 +45,7 @@ app.use(cookieSession({
   maxAge: config.sesion.duracionMs,
   httpOnly: true,
   sameSite: 'lax',
-  secure: config.confiarProxy, // solo HTTPS cuando hay proxy con TLS (Vercel/IIS/Nginx)
+  secure: config.cookieSegura, // solo HTTPS (COOKIE_SECURE; por defecto sigue a TRUST_PROXY)
 }));
 app.use(cargarUsuario);
 
