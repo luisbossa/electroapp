@@ -1535,6 +1535,18 @@ video {
   --u-gradient-to: #0f172a var(--u-gradient-to-position);
 }
 
+.bg-contain {
+  background-size: contain;
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
+.bg-origin-content {
+  background-origin: content-box;
+}
+
 .bg-cover {
   background-size: cover;
 }

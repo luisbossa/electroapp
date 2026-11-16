@@ -2,6 +2,8 @@
     function openEquipoModal(id = null) {
       document.getElementById('modal-equipo').classList.remove('hidden');
       tempEqImageData = '';
+      const eqActual = id ? equipos.find(e => e.id === id) : null;
+      resetEquipoImagePreview(eqActual?.img || '');
       let currentContrato = '';
       if (id) {
         const eq = equipos.find(e => e.id === id);
@@ -17,7 +19,7 @@
           document.getElementById('eq-modelo').value = eq.modelo || '';
           refreshUbicacionSelect(eq.ubicacion || 'SEDE CENTRAL');
           document.getElementById('eq-sububicacion').value = eq.sububicacion || '';
-          document.getElementById('eq-servicio').value = eq.servicio || 'Enfermería';
+          document.getElementById('eq-servicio').value = eq.servicio || '';
           document.getElementById('eq-sap').value = eq.sap || '';
           document.getElementById('eq-sicop').value = eq.sicop || '';
           document.getElementById('eq-fechaIngreso').value = eq.fechaIngreso || '';
@@ -32,7 +34,7 @@
       } else {
         document.getElementById('modal-equipo-title').innerText = 'Registrar Ficha Técnica de Equipo';
         document.getElementById('eq-id').value = '';
-        document.getElementById('eq-activo').value = 'EQ-2026-' + Math.floor(100 + Math.random() * 900);
+        document.getElementById('eq-activo').value = '';
         document.getElementById('eq-serie').value = '';
         document.getElementById('eq-nombre').value = '';
         document.getElementById('eq-estado').value = 'Operativo';
@@ -41,7 +43,7 @@
         document.getElementById('eq-modelo').value = '';
         refreshUbicacionSelect((selectedLocation !== 'TODOS') ? selectedLocation : 'SEDE CENTRAL');
         document.getElementById('eq-sububicacion').value = '';
-        document.getElementById('eq-servicio').value = 'Enfermería';
+        document.getElementById('eq-servicio').value = '';
         document.getElementById('eq-sap').value = '';
         document.getElementById('eq-sicop').value = '';
         document.getElementById('eq-fechaIngreso').value = '';
@@ -59,6 +61,21 @@
       calculateLifecycle();
       renderEquipoPreventiveHistory(id);
       lucide.createIcons();
+    }
+
+    // Limpia el selector de archivo y muestra la foto del equipo (o el aviso de vista previa si no tiene).
+    function resetEquipoImagePreview(img) {
+      const input = document.getElementById('eq-img');
+      if (input) input.value = '';
+      const preview = document.getElementById('imgPreview');
+      if (!preview) return;
+      if (img) {
+        preview.style.backgroundImage = `url("${img}")`;
+        preview.innerHTML = '';
+      } else {
+        preview.style.backgroundImage = '';
+        preview.innerHTML = '<i data-lucide="image" class="w-8 h-8 text-slate-300 mb-1"></i><span>Vista Previa</span>';
+      }
     }
 
     function saveEquipo(e) {
