@@ -172,7 +172,7 @@
       animation: modalEnter .2s ease-out;
       background: #fff;
     }
-    [id^="modal-"]:not(.hidden) { background-color: rgba(15,23,42,.68) !important; }
+    [id^="modal-"].fixed:not(.hidden) { background-color: rgba(15,23,42,.68) !important; }
     [id^="modal-"] > div > div:first-child {
       background: linear-gradient(115deg,#0F2F62 0%,#164E8A 56%,#0F172A 100%) !important;
       color: #fff !important;
@@ -355,6 +355,6 @@
       main { padding: 1rem !important; }
       table th, table td { padding: .75rem !important; }
       button, select { min-height: 40px; }
-      [id^="modal-"] { align-items: flex-start !important; padding: .65rem !important; }
+      [id^="modal-"].fixed { align-items: flex-start !important; padding: .65rem !important; }
       [id^="modal-"] > div { max-height: calc(100vh - 1.3rem) !important; margin: 0 auto !important; }
     }

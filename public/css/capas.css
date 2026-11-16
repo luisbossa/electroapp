@@ -38,6 +38,6 @@ aside .nav-btn,
 }
 
 /* Los modales propios del sistema permanecen por debajo de SweetAlert2. */
-[id^="modal-"] {
+[id^="modal-"].fixed {
   z-index: 9000;
 }

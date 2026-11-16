@@ -1,0 +1,108 @@
+/* Visor de imágenes (ver public/js/visor-imagenes.js). */
+
+/* Las vistas previas con imagen indican que se pueden ampliar. */
+[data-visor][style*="url("] {
+  cursor: zoom-in;
+  position: relative;
+}
+
+[data-visor][style*="url("]:hover {
+  border-color: #60A5FA;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.visor-imagen {
+  position: fixed;
+  inset: 0;
+  z-index: 20000; /* sobre las fichas (9000) y debajo de SweetAlert2 (100000) */
+  display: flex;
+  flex-direction: column;
+  background: rgba(2, 6, 23, 0.88);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: visor-entrada 0.18s ease-out;
+}
+
+.visor-imagen[hidden] { display: none; }
+
+.visor-imagen-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  color: #E2E8F0;
+}
+
+.visor-imagen-titulo {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.visor-imagen-acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.visor-imagen-btn {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 0.7rem;
+  background: rgba(15, 23, 42, 0.6);
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.visor-imagen-btn:hover { background: rgba(59, 130, 246, 0.5); }
+.visor-imagen-btn:focus-visible { outline: 2px solid #60A5FA; outline-offset: 2px; }
+.visor-imagen-btn svg { width: 1.2rem; height: 1.2rem; }
+
+.visor-imagen-lienzo {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem 1.5rem;
+  overflow: auto;
+}
+
+.visor-imagen-lienzo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 0.6rem;
+  background: #FFFFFF;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  cursor: zoom-in;
+}
+
+/* Tamaño real: la imagen puede desbordar y se recorre con scroll. */
+.visor-imagen.ampliada .visor-imagen-lienzo {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.visor-imagen.ampliada .visor-imagen-lienzo img {
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  cursor: zoom-out;
+}
+
+@keyframes visor-entrada {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visor-imagen { animation: none; }
+}

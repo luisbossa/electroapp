@@ -1,9 +1,8 @@
 /* Módulo: bodega. Se carga en el orden indicado en index.html. */
     function openBodegaModal(id = null) {
       tempRepImageData = '';
-      const preview = document.getElementById('repImgPreview');
-      preview.style.backgroundImage = 'none';
-      preview.innerText = 'Vista Previa';
+      const repActual = id ? bodega.find(b => b.id === id) : null;
+      resetImagePreview('rep-img', 'repImgPreview', repActual?.img || '');
       document.getElementById('chip-search-input').value = '';
       const selectProv = document.getElementById('rep-proveedor-select');
       selectProv.innerHTML = '<option value="">-- Seleccionar Proveedor --</option>';
@@ -28,11 +27,6 @@
           document.getElementById('rep-moneda').value = item.moneda || '$';
           document.getElementById('rep-costo-monto').value = item.costo || '';
           document.getElementById('rep-observaciones').value = item.observaciones || '';
-          if (item.img) {
-            preview.style.backgroundImage = `url(${item.img})`;
-            preview.innerText = '';
-            tempRepImageData = item.img;
-          }
           initChipsSelector(item.compatibilidad || "");
         }
       } else {

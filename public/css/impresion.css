@@ -1,0 +1,81 @@
+/* Reglas de impresión.
+   - Impresión general (window.print): sin menú ni barra superior, y el contenido sin recortes.
+   - imprimirVentana(this): solo la ventana elegida, expandida a todo su contenido. */
+
+@page { margin: 12mm; }
+
+@media print {
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #FFFFFF !important;
+  }
+
+  body {
+    display: block !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-imprimir,
+  .visor-imagen,
+  .swal2-container { display: none !important; }
+
+  /* El contenido principal crece a su tamaño real en lugar de tener scroll */
+  main,
+  .flex-1,
+  .overflow-hidden,
+  .overflow-y-auto,
+  .overflow-x-auto {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* ---------- Solo la ventana seleccionada ---------- */
+  body.imprimiendo-ventana > *:not(.area-impresion) { display: none !important; }
+
+  body.imprimiendo-ventana .area-impresion {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    padding: 0 !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;
+  }
+
+  /* Panel de la ventana y todos sus contenedores internos: sin altura máxima ni scroll */
+  body.imprimiendo-ventana .area-impresion,
+  body.imprimiendo-ventana .area-impresion * {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.imprimiendo-ventana .area-impresion > div {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Botón de cerrar de la cabecera */
+  body.imprimiendo-ventana .area-impresion button { display: none !important; }
+
+  /* Evita cortar tarjetas y notas a la mitad entre páginas */
+  body.imprimiendo-ventana .area-impresion .rounded-xl,
+  body.imprimiendo-ventana .area-impresion .rounded-lg {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  body.imprimiendo-ventana .area-impresion .shadow-sm,
+  body.imprimiendo-ventana .area-impresion .shadow-md,
+  body.imprimiendo-ventana .area-impresion .shadow-lg {
+    box-shadow: none !important;
+  }
+}

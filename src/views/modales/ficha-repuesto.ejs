@@ -50,15 +50,18 @@
             >
             <div
               id="repImgPreview"
-              class="w-full h-40 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center text-slate-400 text-xs bg-slate-50 bg-cover bg-center shadow-inner"
+              data-visor="Foto del repuesto"
+              title="Clic para ampliar"
+              class="w-full h-40 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center text-slate-400 text-xs p-2 bg-slate-50 bg-contain bg-no-repeat bg-origin-content bg-center shadow-inner"
             >
-              Vista Previa
+              <i data-lucide="image" class="w-8 h-8 text-slate-300 mb-1"></i>
+              <span>Vista Previa</span>
             </div>
             <input
               type="file"
               id="rep-img"
               accept="image/*"
-              class="mt-2 text-xs w-full text-slate-500"
+              class="mt-2 text-xs w-full text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
               onchange="previewFile('rep-img', 'repImgPreview', setRepImg)"
             />
           </div>

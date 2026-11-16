@@ -1,5 +1,9 @@
 /* Middlewares de autenticación, autorización y protección de la API. */
 const Usuario = require('../models/usuario.model');
+const config = require('../config');
+
+/** La marca de actividad se reescribe como mucho una vez por minuto (evita reescribir la cookie en cada petición). */
+const RENOVAR_ACTIVIDAD_MS = 60 * 1000;
 
 const INVITADO = Object.freeze({ id: 'guest-public-access', nombre: 'Invitado', usuario: 'invitado', rol: 'invitado', activo: true });
 
@@ -10,6 +14,16 @@ const INVITADO = Object.freeze({ id: 'guest-public-access', nombre: 'Invitado', 
 function cargarUsuario(req, _res, next) {
   const enSesion = req.session?.usuario;
   if (!enSesion) { req.usuario = null; return next(); }
+
+  // Cierre por inactividad o por superar la duración máxima de la sesión.
+  const ahora = Date.now();
+  const inicio = Number(req.session.inicio) || 0;
+  const actividad = Number(req.session.actividad) || inicio;
+  if (ahora - actividad > config.sesion.inactividadMs || ahora - inicio > config.sesion.duracionMs) {
+    req.session = null; req.usuario = null; req.sesionExpirada = true; return next();
+  }
+  if (ahora - actividad > RENOVAR_ACTIVIDAD_MS) req.session.actividad = ahora;
+
   if (enSesion.id === INVITADO.id) { req.usuario = { ...INVITADO }; return next(); }
   const actual = Usuario.buscarPorId(enSesion.id);
   if (!actual || !actual.activo) { req.session = null; req.usuario = null; return next(); }
@@ -20,7 +34,7 @@ function cargarUsuario(req, _res, next) {
 }
 
 function requiereSesion(req, res, next) {
-  if (!req.usuario) return res.status(401).json({ mensaje: 'Su sesión expiró. Ingrese nuevamente.' });
+  if (!req.usuario) return res.status(401).json({ mensaje: 'Su sesión expiró. Ingrese nuevamente.', sesionExpirada: true });
   next();
 }
 

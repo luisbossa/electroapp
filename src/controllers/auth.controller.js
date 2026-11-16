@@ -1,18 +1,20 @@
 /* Controlador: ingreso, invitado, cierre y estado de la sesión. */
 const Usuario = require('../models/usuario.model');
 const Bitacora = require('../models/bitacora.model');
+const config = require('../config');
 const { INVITADO, limitarIntentos } = require('../middlewares/autenticacion');
 
 const intentos = limitarIntentos();
 
 /** Guarda el usuario en la cookie de sesión firmada (se reemplaza todo su contenido). */
 function iniciarSesion(req, usuario) {
-  req.session = { usuario, inicio: Date.now() };
+  const ahora = Date.now();
+  req.session = { usuario, inicio: ahora, actividad: ahora };
 }
 
-/** GET /api/estado → { usuario } (null si no hay sesión). */
+/** GET /api/estado → { usuario, inactividadMs, sesionExpirada } (usuario null si no hay sesión). */
 function estado(req, res) {
-  res.json({ usuario: req.usuario });
+  res.json({ usuario: req.usuario, inactividadMs: config.sesion.inactividadMs, sesionExpirada: Boolean(req.sesionExpirada) });
 }
 
 /** POST /api/login { cuenta, clave } → { usuario } */
@@ -28,13 +30,13 @@ async function login(req, res) {
   intentos.exito(req);
   iniciarSesion(req, usuario);
   Bitacora.registrar(usuario.usuario, 'ingreso', req.ip);
-  res.json({ usuario });
+  res.json({ usuario, inactividadMs: config.sesion.inactividadMs });
 }
 
 /** POST /api/invitado → { usuario } (solo consulta) */
 function invitado(req, res) {
   iniciarSesion(req, { ...INVITADO });
-  res.json({ usuario: { ...INVITADO } });
+  res.json({ usuario: { ...INVITADO }, inactividadMs: config.sesion.inactividadMs });
 }
 
 /** POST /api/logout */

@@ -3,7 +3,7 @@
       document.getElementById('modal-equipo').classList.remove('hidden');
       tempEqImageData = '';
       const eqActual = id ? equipos.find(e => e.id === id) : null;
-      resetEquipoImagePreview(eqActual?.img || '');
+      resetImagePreview('eq-img', 'imgPreview', eqActual?.img || '');
       let currentContrato = '';
       if (id) {
         const eq = equipos.find(e => e.id === id);
@@ -61,21 +61,6 @@
       calculateLifecycle();
       renderEquipoPreventiveHistory(id);
       lucide.createIcons();
-    }
-
-    // Limpia el selector de archivo y muestra la foto del equipo (o el aviso de vista previa si no tiene).
-    function resetEquipoImagePreview(img) {
-      const input = document.getElementById('eq-img');
-      if (input) input.value = '';
-      const preview = document.getElementById('imgPreview');
-      if (!preview) return;
-      if (img) {
-        preview.style.backgroundImage = `url("${img}")`;
-        preview.innerHTML = '';
-      } else {
-        preview.style.backgroundImage = '';
-        preview.innerHTML = '<i data-lucide="image" class="w-8 h-8 text-slate-300 mb-1"></i><span>Vista Previa</span>';
-      }
     }
 
     function saveEquipo(e) {

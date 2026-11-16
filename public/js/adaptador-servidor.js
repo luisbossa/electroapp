@@ -3,8 +3,9 @@
 (() => {
   const API = {
     async json(url, options = {}) {
-      const r = await fetch(url, { credentials: 'same-origin', headers: { 'Content-Type': 'application/json', ...(options.headers || {}) }, ...options });
+      const r = await fetch(url, { credentials: 'same-origin', ...options, headers: { 'Content-Type': 'application/json', ...(options.headers || {}) } });
       const j = await r.json().catch(() => ({}));
+      if (r.status === 401 && j.sesionExpirada && currentUser) sesionVencida('Su sesión expiró. Ingrese nuevamente.');
       if (!r.ok) throw new Error(j.mensaje || `Error ${r.status}`);
       return j;
     },
@@ -53,6 +54,59 @@
     API.syncUsuarios(usuarios).then(r => { usuarios = r.usuarios || usuarios; renderUsuarios(); }).catch(e => alert(e.message));
   };
 
+  /* ---------- Cierre de sesión por inactividad ---------- */
+  // La última actividad se comparte entre pestañas (localStorage) para no cerrar una pestaña
+  // mientras el usuario trabaja en otra. El servidor también valida la inactividad.
+  const CLAVE_ACTIVIDAD = 'gem-ultima-actividad';
+  const AVISAR_SERVIDOR_MS = 2 * 60 * 1000;
+  let inactividadMs = 30 * 60 * 1000, ultimaActividad = Date.now(), ultimoAviso = 0, vigilando = false, timerVigilancia = null;
+
+  function leerActividadCompartida() {
+    try { return Number(localStorage.getItem(CLAVE_ACTIVIDAD)) || 0; } catch { return 0; }
+  }
+  function registrarActividad() {
+    if (!vigilando) return;
+    const ahora = Date.now();
+    if (ahora - ultimaActividad < 1000) return;
+    ultimaActividad = ahora;
+    try { localStorage.setItem(CLAVE_ACTIVIDAD, String(ahora)); } catch { /* sin almacenamiento */ }
+    // Mantiene viva la sesión en el servidor mientras se usa la aplicación, aunque no se guarde nada.
+    if (ahora - ultimoAviso > AVISAR_SERVIDOR_MS) { ultimoAviso = ahora; API.estado().catch(() => {}); }
+  }
+  function revisarInactividad() {
+    if (!vigilando) return;
+    const ultima = Math.max(ultimaActividad, leerActividadCompartida());
+    if (Date.now() - ultima >= inactividadMs) sesionVencida('Su sesión se cerró por inactividad. Ingrese nuevamente.');
+  }
+  function iniciarVigilancia(ms) {
+    if (Number(ms) > 0) inactividadMs = Number(ms);
+    ultimaActividad = ultimoAviso = Date.now();
+    try { localStorage.setItem(CLAVE_ACTIVIDAD, String(ultimaActividad)); } catch { /* sin almacenamiento */ }
+    vigilando = true;
+    clearInterval(timerVigilancia);
+    timerVigilancia = setInterval(revisarInactividad, 15 * 1000);
+  }
+  function detenerVigilancia() {
+    vigilando = false;
+    clearInterval(timerVigilancia);
+  }
+  function sesionVencida(mensaje) {
+    if (!currentUser) return;
+    detenerVigilancia();
+    API.logout().catch(() => {});
+    currentUser = null;
+    delete document.body.dataset.userRole;
+    document.querySelectorAll('[id^="modal-"].fixed:not(.hidden)').forEach(m => m.classList.add('hidden'));
+    if (window.Swal?.isVisible()) Swal.close();
+    showLoginScreen();
+    setLoginError(mensaje, 'info');
+  }
+  ['pointerdown', 'keydown', 'wheel', 'touchstart', 'mousemove'].forEach(evento =>
+    document.addEventListener(evento, registrarActividad, { passive: true, capture: true }));
+  // Los temporizadores se pausan en pestañas ocultas: se revisa al volver a la pestaña.
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) revisarInactividad(); });
+  window.addEventListener('focus', revisarInactividad);
+
   /* ---------- Sesión ---------- */
   async function cargarDatosSesion() {
     const d = await API.datos();
@@ -70,7 +124,9 @@
     const password = document.getElementById('login-password').value;
     setLoginBusy(true);
     try {
-      currentUser = (await API.login(usuario, password)).usuario;
+      const r = await API.login(usuario, password);
+      currentUser = r.usuario;
+      iniciarVigilancia(r.inactividadMs);
       clearLoginError();
       cargandoServidor = true;
       await cargarDatosSesion();
@@ -86,7 +142,9 @@
   loginAsGuest = async function () {
     setLoginBusy(true);
     try {
-      currentUser = (await API.guest()).usuario;
+      const r = await API.guest();
+      currentUser = r.usuario;
+      iniciarVigilancia(r.inactividadMs);
       clearLoginError();
       cargandoServidor = true;
       await cargarDatosSesion();
@@ -100,6 +158,7 @@
   };
 
   logoutUser = async function () {
+    detenerVigilancia();
     try { await API.logout(); } catch { /* la sesión local se cierra igualmente */ }
     currentUser = null;
     delete document.body.dataset.userRole;
@@ -110,12 +169,15 @@
     initSmartSearches();
     cargandoServidor = true;
     try {
-      currentUser = (await API.estado()).usuario || null;
+      const estado = await API.estado();
+      currentUser = estado.usuario || null;
       if (currentUser) {
+        iniciarVigilancia(estado.inactividadMs);
         await cargarDatosSesion();
         showApplication();
       } else {
         showLoginScreen();
+        if (estado.sesionExpirada) setLoginError('Su sesión se cerró por inactividad. Ingrese nuevamente.', 'info');
       }
     } catch (e) {
       console.warn('Servidor no disponible; se usa el modo local.', e);

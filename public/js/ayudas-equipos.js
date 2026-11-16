@@ -39,7 +39,7 @@
 
       container.innerHTML = matchedParts.map(p => `
         <div onclick="openBodegaModal('${p.id}')" class="p-3 bg-white border border-slate-200 rounded-xl space-y-2 text-xs cursor-pointer hover:border-blue-400 hover:shadow-sm transition flex gap-3 items-center">
-          <div class="w-12 h-12 bg-slate-100 rounded-lg border border-slate-200 bg-cover bg-center shrink-0 flex items-center justify-center text-slate-400" style="${p.img ? 'background-image: url('+p.img+');' : ''}">
+          <div data-visor="${String(p.nombre || 'Repuesto').replace(/"/g, '&quot;')}" class="w-12 h-12 bg-slate-100 rounded-lg border border-slate-200 bg-contain bg-no-repeat bg-center shrink-0 flex items-center justify-center text-slate-400" style="${p.img ? 'background-image: url('+p.img+');' : ''}">
             ${!p.img ? '<i data-lucide="package" class="w-5 h-5 text-slate-400"></i>' : ''}
           </div>
           <div class="flex-1 min-w-0">
@@ -152,6 +152,21 @@
         reader.readAsDataURL(file);
       }
     }
+    // Limpia el selector de archivo y muestra la foto guardada (o el aviso de vista previa si no hay).
+    function resetImagePreview(inputId, previewId, img) {
+      const input = document.getElementById(inputId);
+      if (input) input.value = '';
+      const preview = document.getElementById(previewId);
+      if (!preview) return;
+      if (img) {
+        preview.style.backgroundImage = 'url("' + img + '")';
+        preview.innerHTML = '';
+      } else {
+        preview.style.backgroundImage = '';
+        preview.innerHTML = '<i data-lucide="image" class="w-8 h-8 text-slate-300 mb-1"></i><span>Vista Previa</span>';
+      }
+    }
+
     function setEqImg(val) { tempEqImageData = val; }
     function setRepImg(val) { tempRepImageData = val; }
 

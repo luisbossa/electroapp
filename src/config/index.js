@@ -63,7 +63,10 @@ module.exports = {
   },
   sesion: {
     secreto: obtenerSecretoSesion(),
+    /** Duración máxima de una sesión, aunque haya actividad. */
     duracionMs: (Number(process.env.SESSION_HOURS) || 10) * 60 * 60 * 1000,
+    /** Minutos sin actividad tras los cuales la sesión se cierra (también si se cerró la pestaña). */
+    inactividadMs: (Number(process.env.SESSION_IDLE_MINUTES) || 30) * 60 * 1000,
   },
   adminInicial: {
     usuario: process.env.ADMIN_USER || 'admin',
