@@ -258,14 +258,14 @@
           <div class="bg-white rounded-xl border border-slate-300 shadow-sm overflow-hidden border-l-4 border-l-blue-600">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4">
               <div class="flex items-start gap-3 text-left min-w-0 flex-1">
-                <button type="button"
+                ${currentUser?.rol === 'invitado' ? '' : `<button type="button"
                   onclick="toggleProcedimiento('${p.id}')"
                   class="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm shrink-0 transition"
                   aria-expanded="${expandido}"
                   title="${expandido ? 'Ocultar contratos' : 'Ver contratos'}"
                   aria-label="${expandido ? 'Ocultar contratos del procedimiento' : 'Ver contratos del procedimiento'}">
                   <i data-lucide="chevron-${expandido ? 'down' : 'right'}" class="w-5 h-5 pointer-events-none"></i>
-                </button>
+                </button>`}
                 <button type="button"
                   onclick="toggleProcedimiento('${p.id}')"
                   class="min-w-0 flex-1 text-left"

@@ -4,14 +4,14 @@
     function requireAdmin() { if (!currentUser || currentUser.rol !== 'admin') { alert('Acceso exclusivo para administradores.'); return false; } return true; }
     const GUEST_ALLOWED_TABS = new Set(['equipos','bodega','procedimientos-contratos']);
     const WRITE_ACTION_RE = /^(openAveriaModal|openContratoModal|openCronogramaModal|openDevolucionModal|openIngresoBodegaModal|openPreventiveContractModal|openPreventiveVisit|openProcedimientoModal|openProvModal|openResolverAveriaModal|openSalidaEquipoModal|openSalidaModal|openUsuarioModal|delete|cerrarOT|toggleUsuario|addAvance|toggleCronVisitaItems|resetData|exportJSON|addChipItem|removeChipItem)/;
-    function isWriteControl(el){const code=(el?.getAttribute?.('onclick')||'').trim();return WRITE_ACTION_RE.test(code)||/^openEquipoModal\(\s*\)/.test(code)||/^openBodegaModal\(\s*\)/.test(code);}
+    function isWriteControl(el){if(el?.hasAttribute?.('data-write-control'))return true;const code=(el?.getAttribute?.('onclick')||'').trim();return WRITE_ACTION_RE.test(code)||/^openEquipoModal\(\s*\)/.test(code)||/^openBodegaModal\(\s*\)/.test(code);}
     function showReadOnlyNotice(){if(window.Swal)Swal.fire({icon:'info',title:'Modo de consulta',text:'Su perfil permite consultar información, pero no crear, editar ni eliminar registros.',confirmButtonText:'Entendido',confirmButtonColor:'#2563EB'});else alert('Su perfil está en modo de consulta y no permite modificar información.');}
     function setPermissionHidden(el,hide,key='permissionHidden'){if(!el)return;if(hide){el.dataset[key]='1';el.style.setProperty('display','none','important');}else if(el.dataset[key]){el.style.removeProperty('display');delete el.dataset[key];}}
     function applyRolePermissions(){
       if(!currentUser)return;const readonly=currentUser.rol!=='admin',guest=currentUser.rol==='invitado';
       document.querySelectorAll('nav .nav-btn').forEach(btn=>{const match=(btn.getAttribute('onclick')||'').match(/changeTab\('([^']+)'/),tab=match?.[1];if(tab)setPermissionHidden(btn,guest&&!GUEST_ALLOWED_TABS.has(tab),'guestHidden');});
       setPermissionHidden(document.getElementById('notifications-button'),guest,'guestHidden');
-      document.querySelectorAll('[onclick]').forEach(el=>{if(isWriteControl(el))setPermissionHidden(el,readonly);});
+      document.querySelectorAll('[onclick],[data-write-control]').forEach(el=>{if(isWriteControl(el))setPermissionHidden(el,readonly);});
       document.querySelectorAll('form button[type="submit"]').forEach(el=>{if(!el.closest('#login-screen'))setPermissionHidden(el,readonly);});
       setPermissionHidden(document.querySelector('button[onclick*="addChipItem"]'),readonly,'roleChipHidden');
       const chipSearch=document.getElementById('chip-search-input'),chipSelect=document.getElementById('chip-quick-select');
@@ -19,7 +19,7 @@
       renderChips();
       document.querySelectorAll('[id^="modal-"]:not(.hidden) input, [id^="modal-"]:not(.hidden) select, [id^="modal-"]:not(.hidden) textarea').forEach(el=>{if(readonly){if(!el.disabled){el.disabled=true;el.dataset.roleDisabled='1';}}else if(el.dataset.roleDisabled){el.disabled=false;delete el.dataset.roleDisabled;}});
     }
-    document.addEventListener('click',e=>{if(!currentUser||currentUser.rol==='admin')return;const control=e.target.closest('[onclick]');if(control&&isWriteControl(control)){e.preventDefault();e.stopImmediatePropagation();showReadOnlyNotice();}},true);
+    document.addEventListener('click',e=>{if(!currentUser||currentUser.rol==='admin')return;const control=e.target.closest('[onclick],[data-write-control]');if(control&&isWriteControl(control)){e.preventDefault();e.stopImmediatePropagation();showReadOnlyNotice();}},true);
     document.addEventListener('submit',e=>{if(currentUser&&currentUser.rol!=='admin'&&!e.target.closest('#login-screen')){e.preventDefault();e.stopImmediatePropagation();showReadOnlyNotice();}},true);
     document.addEventListener('click',()=>setTimeout(applyRolePermissions,0));
     function renderUsuarios() {

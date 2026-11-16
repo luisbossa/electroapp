@@ -11,7 +11,10 @@
   "scripts": {
     "start": "node --env-file-if-exists=.env server.js",
     "dev": "node --env-file-if-exists=.env --watch server.js",
-    "db:reset-admin": "node --env-file-if-exists=.env scripts/restablecer-admin.js"
+    "db:reset-admin": "node --env-file-if-exists=.env scripts/restablecer-admin.js",
+    "build:css": "tailwindcss -i ./src/estilos/tailwind.css -o ./public/css/tailwind.css --minify",
+    "build:vendor": "node scripts/construir-recursos.js",
+    "build": "npm run build:vendor && npm run build:css"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -19,5 +22,11 @@
     "ejs": "^7.0.2",
     "express": "^4.22.3",
     "express-ejs-layouts": "^2.5.1"
+  },
+  "devDependencies": {
+    "chart.js": "4.4.1",
+    "lucide": "0.460.0",
+    "sweetalert2": "11.14.5",
+    "tailwindcss": "3.4.16"
   }
 }

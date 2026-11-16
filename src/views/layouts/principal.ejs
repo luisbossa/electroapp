@@ -6,12 +6,10 @@
     <meta name="theme-color" content="#2563eb" />
     <title><%= titulo %></title>
 
-    <!-- Librerías externas (versiones fijas para evitar cambios inesperados) -->
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-    <script src="/js/tailwind-config.js"></script>
-    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <!-- Librerías servidas desde el propio sitio (se generan con `npm run build`; versiones fijas en package.json) -->
+    <script src="/vendor/lucide.min.js?v=<%= version %>"></script>
+    <script src="/vendor/chart.umd.min.js?v=<%= version %>"></script>
+    <script src="/vendor/sweetalert2.all.min.js?v=<%= version %>"></script>
     <script src="/js/iconos.js"></script>
 
     <link rel="preload" as="image" href="/assets/fondo-login.png" fetchpriority="high" />
@@ -21,6 +19,9 @@
     <link rel="stylesheet" href="/css/capas.css?v=<%= version %>" />
     <link rel="stylesheet" href="/css/fichas.css?v=<%= version %>" />
     <link rel="stylesheet" href="/css/login.css?v=<%= version %>" />
+    <!-- Tailwind compilado: va al final para conservar la prioridad que tenía el CDN -->
+    <link rel="stylesheet" href="/css/tailwind.css?v=<%= version %>" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   </head>
   <body class="bg-brand-bg font-sans text-slate-800 flex h-screen overflow-hidden">
 <%- body %>
